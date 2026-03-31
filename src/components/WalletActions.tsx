@@ -29,8 +29,8 @@ export function WalletActions({
           <div className="flex flex-wrap items-center gap-2">
             <Badge className="gap-2">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-200 opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-200" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
               </span>
               Live Farm
             </Badge>
