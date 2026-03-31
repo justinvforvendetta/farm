@@ -17,9 +17,9 @@ const variants: Record<ButtonVariant, string> = {
 
 export function buttonVariants(variant: ButtonVariant = "default", className?: string) {
   return cn(
-    "inline-flex h-11 items-center justify-center whitespace-nowrap rounded-2xl px-4 text-sm font-medium transition-colors",
+    "inline-flex h-11 items-center justify-center whitespace-nowrap rounded-2xl px-4 text-sm font-medium shadow-[0_12px_30px_rgba(2,6,23,0.22)] transition-all duration-200",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-200/70",
-    "disabled:cursor-not-allowed",
+    "disabled:cursor-not-allowed disabled:shadow-none",
     variants[variant],
     className,
   );

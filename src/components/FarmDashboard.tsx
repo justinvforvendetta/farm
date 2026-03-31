@@ -20,7 +20,8 @@ export function FarmDashboard() {
 
   return (
     <div className="min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden bg-blue-950/30 bg-farm-grid px-4 py-6 text-slate-100 sm:px-6 sm:py-8 md:px-10 md:py-10">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-blue-200/12 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-blue-200/12 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-gradient-to-r from-transparent via-blue-100/25 to-transparent" />
       <div className="relative mx-auto grid max-w-6xl gap-4 sm:gap-6">
         <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
           <WalletActions
@@ -38,6 +39,16 @@ export function FarmDashboard() {
           />
         </div>
 
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+              Wallet Snapshot
+            </div>
+            <div className="mt-1 text-sm text-slate-200/85">
+              Current balances for your XVGBASE, WETH, and LP positions.
+            </div>
+          </div>
+        </div>
         <div className="grid gap-6 md:grid-cols-3">
           <MetricCard
             icon={<Coins className="h-5 w-5" />}
@@ -64,6 +75,14 @@ export function FarmDashboard() {
           />
         </div>
 
+        <div>
+          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+            Liquidity Flow
+          </div>
+          <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
+            Approve both assets, add liquidity to the Base pool, then stake the LP tokens below.
+          </div>
+        </div>
         <LiquidityPanel
           tokenSymbol={farmConfig.tokenSymbol}
           quoteTokenSymbol={farmConfig.quoteTokenSymbol}
@@ -88,6 +107,11 @@ export function FarmDashboard() {
           onAddLiquidity={farm.addLiquidity}
         />
 
+        <div>
+          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+            Farm Performance
+          </div>
+        </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <MetricCard
             icon={<Droplets className="h-5 w-5" />}
@@ -105,6 +129,14 @@ export function FarmDashboard() {
           />
         </div>
 
+        <div>
+          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+            Position Controls
+          </div>
+          <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
+            Stake LP, withdraw positions, and claim XVGBASE rewards from one place.
+          </div>
+        </div>
         <div className="grid gap-6 lg:grid-cols-2">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
             <StakePanel

@@ -13,16 +13,18 @@ type MetricCardProps = {
 export function MetricCard({ icon, title, value, subtitle, delay = 0 }: MetricCardProps) {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { delay } }}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            {icon}
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-3 text-base uppercase tracking-[0.18em] text-slate-300">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-200/20 bg-blue-200/10 text-blue-100">
+              {icon}
+            </span>
             {title}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-semibold">{value}</div>
-          <div className="mt-1 text-sm text-slate-300">{subtitle}</div>
+          <div className="text-3xl font-semibold tracking-tight sm:text-[2rem]">{value}</div>
+          <div className="mt-2 text-sm text-slate-300/90">{subtitle}</div>
         </CardContent>
       </Card>
     </motion.div>
