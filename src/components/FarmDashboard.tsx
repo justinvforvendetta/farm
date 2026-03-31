@@ -22,6 +22,8 @@ export function FarmDashboard() {
     <div className="min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden bg-blue-950/30 bg-farm-grid px-4 py-6 text-slate-100 sm:px-6 sm:py-8 md:px-10 md:py-10">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-blue-200/12 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-gradient-to-r from-transparent via-blue-100/25 to-transparent" />
+      <div className="pointer-events-none absolute left-[-8rem] top-32 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
+      <div className="pointer-events-none absolute right-[-6rem] top-80 h-72 w-72 rounded-full bg-blue-300/10 blur-3xl" />
       <div className="relative mx-auto grid max-w-6xl gap-4 sm:gap-6">
         <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
           <WalletActions
@@ -41,7 +43,7 @@ export function FarmDashboard() {
 
         <div className="flex items-center justify-between gap-4">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+            <div className="text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
               Wallet Snapshot
             </div>
             <div className="mt-1 text-sm text-slate-200/85">
@@ -76,11 +78,11 @@ export function FarmDashboard() {
         </div>
 
         <div>
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+          <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Liquidity Flow
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Approve both assets, add liquidity to the Base pool, then stake the LP tokens below.
+            Approve both assets, add liquidity to the $XVGBASE pool, then stake those new Wallet LP tokens below!
           </div>
         </div>
         <LiquidityPanel
@@ -108,8 +110,11 @@ export function FarmDashboard() {
         />
 
         <div>
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+          <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Farm Performance
+          </div>
+          <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
+            Here you can track the Wallet LP Tokens you have staked for the farm, and your Earned Rewards from staking (updated every ~10 seconds)
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -130,11 +135,11 @@ export function FarmDashboard() {
         </div>
 
         <div>
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/70">
+          <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Position Controls
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Stake LP, withdraw positions, and claim XVGBASE rewards from one place.
+            Stake LP, withdraw positions, and claim XVGBASE rewards from one place. After this step, you will see the Staked LP and Earned Rewards balances!
           </div>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
