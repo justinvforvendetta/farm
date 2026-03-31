@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Copy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { farmConfig } from "@/lib/config";
 
@@ -49,9 +50,10 @@ export function ProgramInfoCard({
             <button
               type="button"
               onClick={copyAddress}
-              className="break-all text-blue-200 underline underline-offset-4"
+              className="inline-flex items-center gap-2 break-all text-blue-200 underline underline-offset-4"
             >
               {farmConfig.tokenAddress}
+              <Copy className="h-4 w-4 shrink-0" />
             </button>
             {copied ? (
               <div className="mt-1 inline-block rounded-md border border-blue-200/40 bg-blue-200/10 px-2 py-1 text-xs text-blue-100">
