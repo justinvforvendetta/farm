@@ -19,7 +19,7 @@ function getNumberEnv(name: string, fallback: number) {
 }
 
 export const farmConfig = {
-  chainId: getNumberEnv("VITE_CHAIN_ID", 1),
+  chainId: getNumberEnv("VITE_CHAIN_ID", 8453),
   chainName: getEnv("VITE_CHAIN_NAME", "Base Network"),
   projectName: getEnv("VITE_PROJECT_NAME", "XVGBASE"),
   projectTicker: getEnv("VITE_PROJECT_TICKER", "XVGBASE"),
