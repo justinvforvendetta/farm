@@ -87,6 +87,10 @@ function formatStatusError(error: unknown, fallback: string) {
     return `${fallback} The router rejected the transaction. Check the router address, pool address, pool type, and entered amounts.`;
   }
 
+  if (message.includes("execution reverted")) {
+    return `${fallback} The router reverted the transaction. Refresh balances, confirm approvals, and try a smaller amount near the current pool ratio.`;
+  }
+
   return message.length > 220 ? `${message.slice(0, 217)}...` : message;
 }
 
@@ -411,6 +415,26 @@ export function useFarm(): FarmState {
     setLiquidityTokenInput(tokenFromQuoteInput(value));
   }, [tokenFromQuoteInput]);
 
+  const hasApproval = allowance > 0n;
+  const requiredTokenApproval = parseInputToUnitsSafe(
+    liquidityTokenInput || "0",
+    farmConfig.tokenDecimals,
+  );
+  const requiredQuoteApproval = parseInputToUnitsSafe(
+    liquidityQuoteInput || "0",
+    farmConfig.quoteTokenDecimals,
+  );
+  const requiredRemoveLiquidityApproval = parseInputToUnitsSafe(
+    removeLiquidityInput || "0",
+    farmConfig.lpDecimals,
+  );
+  const hasLiquidityTokenApproval =
+    requiredTokenApproval === 0n || tokenAllowanceToRouter >= requiredTokenApproval;
+  const hasLiquidityQuoteApproval =
+    requiredQuoteApproval === 0n || quoteTokenAllowanceToRouter >= requiredQuoteApproval;
+  const hasRemoveLiquidityApproval =
+    requiredRemoveLiquidityApproval === 0n || lpAllowanceToRouter >= requiredRemoveLiquidityApproval;
+
   const approveLp = useCallback(async () => {
     if (!lpWrite) {
       setStatus("Connect wallet first.");
@@ -514,6 +538,26 @@ export function useFarm(): FarmState {
         return;
       }
 
+      if (!hasLiquidityTokenApproval || !hasLiquidityQuoteApproval) {
+        setStatus(`Approve both ${farmConfig.tokenSymbol} and ${farmConfig.quoteTokenSymbol} before adding liquidity.`);
+        return;
+      }
+
+      if (amountTokenDesired > walletTokenBalance) {
+        setStatus(`Insufficient ${farmConfig.tokenSymbol} balance for this liquidity add.`);
+        return;
+      }
+
+      if (amountQuoteDesired > walletQuoteTokenBalance) {
+        setStatus(`Insufficient ${farmConfig.quoteTokenSymbol} balance for this liquidity add.`);
+        return;
+      }
+
+      if (pairTokenReserve <= 0n || pairQuoteReserve <= 0n) {
+        setStatus("Pool reserves are unavailable right now. Refresh and try again.");
+        return;
+      }
+
       const slippageBps = BigInt(farmConfig.liquiditySlippageBps);
       const amountTokenMin = (amountTokenDesired * (10000n - slippageBps)) / 10000n;
       const amountQuoteMin = (amountQuoteDesired * (10000n - slippageBps)) / 10000n;
@@ -548,7 +592,19 @@ export function useFarm(): FarmState {
     } finally {
       setBusy(false);
     }
-  }, [account, liquidityQuoteInput, liquidityTokenInput, refreshData, v2RouterWrite]);
+  }, [
+    account,
+    hasLiquidityQuoteApproval,
+    hasLiquidityTokenApproval,
+    liquidityQuoteInput,
+    liquidityTokenInput,
+    pairQuoteReserve,
+    pairTokenReserve,
+    refreshData,
+    v2RouterWrite,
+    walletQuoteTokenBalance,
+    walletTokenBalance,
+  ]);
 
   const removeLiquidity = useCallback(async () => {
     if (!v2RouterWrite) {
@@ -561,6 +617,16 @@ export function useFarm(): FarmState {
 
       if (liquidity <= 0n) {
         setStatus("Enter a valid LP amount to remove.");
+        return;
+      }
+
+      if (!hasRemoveLiquidityApproval) {
+        setStatus("Approve your LP tokens for the router before removing liquidity.");
+        return;
+      }
+
+      if (liquidity > walletLpBalance) {
+        setStatus(`Insufficient ${farmConfig.lpSymbol} balance in your wallet to remove that amount.`);
         return;
       }
 
@@ -611,6 +677,7 @@ export function useFarm(): FarmState {
     removeLiquidityInput,
     totalStaked,
     v2RouterWrite,
+    hasRemoveLiquidityApproval,
     walletLpBalance,
   ]);
 
@@ -815,26 +882,6 @@ export function useFarm(): FarmState {
       cancelled = true;
     };
   }, [address, chain?.id, connector, isConnected]);
-
-  const hasApproval = allowance > 0n;
-  const requiredTokenApproval = parseInputToUnitsSafe(
-    liquidityTokenInput || "0",
-    farmConfig.tokenDecimals,
-  );
-  const requiredQuoteApproval = parseInputToUnitsSafe(
-    liquidityQuoteInput || "0",
-    farmConfig.quoteTokenDecimals,
-  );
-  const requiredRemoveLiquidityApproval = parseInputToUnitsSafe(
-    removeLiquidityInput || "0",
-    farmConfig.lpDecimals,
-  );
-  const hasLiquidityTokenApproval =
-    requiredTokenApproval === 0n || tokenAllowanceToRouter >= requiredTokenApproval;
-  const hasLiquidityQuoteApproval =
-    requiredQuoteApproval === 0n || quoteTokenAllowanceToRouter >= requiredQuoteApproval;
-  const hasRemoveLiquidityApproval =
-    requiredRemoveLiquidityApproval === 0n || lpAllowanceToRouter >= requiredRemoveLiquidityApproval;
 
   return {
     provider,
