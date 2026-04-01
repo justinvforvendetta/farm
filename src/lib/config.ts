@@ -18,6 +18,24 @@ function getNumberEnv(name: string, fallback: number) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function getBooleanEnv(name: string, fallback: boolean) {
+  const raw = import.meta.env[name];
+  if (typeof raw !== "string") {
+    return fallback;
+  }
+
+  const normalized = raw.trim().toLowerCase();
+  if (normalized === "true") {
+    return true;
+  }
+
+  if (normalized === "false") {
+    return false;
+  }
+
+  return fallback;
+}
+
 export const farmConfig = {
   chainId: getNumberEnv("VITE_CHAIN_ID", 8453),
   chainName: getEnv("VITE_CHAIN_NAME", "Base Network"),
@@ -43,6 +61,7 @@ export const farmConfig = {
   lpTokenAddress: getEnv("VITE_LP_TOKEN_ADDRESS", "0xYourLpTokenAddressHere"),
   v2RouterAddress: getEnv("VITE_V2_ROUTER_ADDRESS", "0xYourV2RouterAddressHere"),
   v2PoolAddress: getEnv("VITE_V2_POOL_ADDRESS", "0xYourXvgbaseWethPairAddressHere"),
+  poolStable: getBooleanEnv("VITE_POOL_STABLE", false),
   liquiditySlippageBps: getNumberEnv("VITE_LIQUIDITY_SLIPPAGE_BPS", 100),
   liquidityDeadlineMinutes: getNumberEnv("VITE_LIQUIDITY_DEADLINE_MINUTES", 20),
   tokenDecimals: getNumberEnv("VITE_TOKEN_DECIMALS", 18),

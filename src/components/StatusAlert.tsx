@@ -7,7 +7,7 @@ type StatusAlertProps = {
 export function StatusAlert({ status }: StatusAlertProps) {
   return (
     <Alert>
-      <AlertDescription className="break-words">{status}</AlertDescription>
+      <AlertDescription className="overflow-hidden break-all whitespace-pre-wrap">{status}</AlertDescription>
     </Alert>
   );
 }

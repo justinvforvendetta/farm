@@ -73,6 +73,23 @@ export type FarmState = {
   fillMaxWithdraw: () => void;
 };
 
+function formatStatusError(error: unknown, fallback: string) {
+  if (!(error instanceof Error)) {
+    return fallback;
+  }
+
+  const message = error.message.trim();
+  if (!message) {
+    return fallback;
+  }
+
+  if (message.includes("missing revert data")) {
+    return `${fallback} The router rejected the transaction. Check the router address, pool address, pool type, and entered amounts.`;
+  }
+
+  return message.length > 220 ? `${message.slice(0, 217)}...` : message;
+}
+
 export function useFarm(): FarmState {
   const { address, connector, chain, isConnected } = useAccount();
   const rewardsContractReady = isAddress(farmConfig.rewardsContractAddress);
@@ -305,9 +322,7 @@ export function useFarm(): FarmState {
         setPairQuoteReserve(0n);
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to refresh contract data.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Failed to refresh contract data."));
     }
   }, [
     account,
@@ -410,8 +425,7 @@ export function useFarm(): FarmState {
       setStatus("LP approval confirmed.");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "LP approval failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "LP approval failed."));
     } finally {
       setBusy(false);
     }
@@ -431,8 +445,7 @@ export function useFarm(): FarmState {
       setStatus(`${farmConfig.tokenSymbol} approval confirmed.`);
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : `${farmConfig.tokenSymbol} approval failed.`;
-      setStatus(message);
+      setStatus(formatStatusError(error, `${farmConfig.tokenSymbol} approval failed.`));
     } finally {
       setBusy(false);
     }
@@ -452,11 +465,7 @@ export function useFarm(): FarmState {
       setStatus(`${farmConfig.quoteTokenSymbol} approval confirmed.`);
       await refreshData();
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : `${farmConfig.quoteTokenSymbol} approval failed.`;
-      setStatus(message);
+      setStatus(formatStatusError(error, `${farmConfig.quoteTokenSymbol} approval failed.`));
     } finally {
       setBusy(false);
     }
@@ -476,8 +485,7 @@ export function useFarm(): FarmState {
       setStatus(`${farmConfig.lpSymbol} router approval confirmed.`);
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "LP router approval failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "LP router approval failed."));
     } finally {
       setBusy(false);
     }
@@ -521,6 +529,7 @@ export function useFarm(): FarmState {
       const tx = await v2RouterWrite.addLiquidity(
         farmConfig.tokenAddress,
         farmConfig.quoteTokenAddress,
+        farmConfig.poolStable,
         amountTokenDesired,
         amountQuoteDesired,
         amountTokenMin,
@@ -535,8 +544,7 @@ export function useFarm(): FarmState {
       setLiquidityQuoteInput("");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Add liquidity failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Add liquidity failed."));
     } finally {
       setBusy(false);
     }
@@ -578,6 +586,7 @@ export function useFarm(): FarmState {
       const tx = await v2RouterWrite.removeLiquidity(
         farmConfig.tokenAddress,
         farmConfig.quoteTokenAddress,
+        farmConfig.poolStable,
         liquidity,
         amountTokenMin,
         amountQuoteMin,
@@ -590,8 +599,7 @@ export function useFarm(): FarmState {
       setRemoveLiquidityInput("");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Remove liquidity failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Remove liquidity failed."));
     } finally {
       setBusy(false);
     }
@@ -628,8 +636,7 @@ export function useFarm(): FarmState {
       setStakeInput("");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Stake failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Stake failed."));
     } finally {
       setBusy(false);
     }
@@ -657,8 +664,7 @@ export function useFarm(): FarmState {
       setWithdrawInput("");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Withdraw failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Withdraw failed."));
     } finally {
       setBusy(false);
     }
@@ -678,8 +684,7 @@ export function useFarm(): FarmState {
       setStatus("Rewards claimed.");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Claim failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Claim failed."));
     } finally {
       setBusy(false);
     }
@@ -699,8 +704,7 @@ export function useFarm(): FarmState {
       setStatus("Exit confirmed.");
       await refreshData();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Exit failed.";
-      setStatus(message);
+      setStatus(formatStatusError(error, "Exit failed."));
     } finally {
       setBusy(false);
     }
