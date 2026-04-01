@@ -14,15 +14,15 @@ export function ProgramInfoCard({
   totalStaked,
   programEnds,
 }: ProgramInfoCardProps) {
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<"token" | "quote" | null>(null);
 
-  async function copyAddress() {
+  async function copyAddress(value: string, field: "token" | "quote") {
     try {
-      await navigator.clipboard.writeText(farmConfig.tokenAddress);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
+      await navigator.clipboard.writeText(value);
+      setCopiedField(field);
+      window.setTimeout(() => setCopiedField((current) => (current === field ? null : current)), 1600);
     } catch {
-      setCopied(false);
+      setCopiedField(null);
     }
   }
 
@@ -49,13 +49,31 @@ export function ProgramInfoCard({
           <div className="text-right">
             <button
               type="button"
-              onClick={copyAddress}
+              onClick={() => copyAddress(farmConfig.tokenAddress, "token")}
               className="inline-flex items-center gap-2 break-all text-blue-200 underline underline-offset-4"
             >
               {farmConfig.tokenAddress}
               <Copy className="h-4 w-4 shrink-0" />
             </button>
-            {copied ? (
+            {copiedField === "token" ? (
+              <div className="mt-1 inline-block rounded-md border border-blue-200/40 bg-blue-200/10 px-2 py-1 text-xs text-blue-100">
+                Copied
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="flex items-start justify-between gap-4">
+          <span>WETH Contract</span>
+          <div className="text-right">
+            <button
+              type="button"
+              onClick={() => copyAddress(farmConfig.quoteTokenAddress, "quote")}
+              className="inline-flex items-center gap-2 break-all text-blue-200 underline underline-offset-4"
+            >
+              {farmConfig.quoteTokenAddress}
+              <Copy className="h-4 w-4 shrink-0" />
+            </button>
+            {copiedField === "quote" ? (
               <div className="mt-1 inline-block rounded-md border border-blue-200/40 bg-blue-200/10 px-2 py-1 text-xs text-blue-100">
                 Copied
               </div>
