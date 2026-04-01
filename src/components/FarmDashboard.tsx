@@ -139,7 +139,7 @@ export function FarmDashboard() {
             Position Controls
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Stake LP, Withdraw LP, and claim XVGBASE rewards from one place. After this step, you will see the Staked LP and Earned Rewards balances! You may claim your $XVGBASE as often as you like, or even redeposit it and earn even more rewards per day! You do NOT have to withdraw your LP position/stake to claim your XVGBASE rewards, and they will still continue earning immediately after all are withdrawn so long as your position is not withdraw. To withdraw everything, go to the last step titled "Claim Initial WETH/XVGBASE"
+            Stake LP, withdraw LP, and claim XVGBASE rewards from one place. Once your LP is staked, you will see your Staked LP and Earned Rewards balances update here. You can claim your $XVGBASE rewards as often as you like without withdrawing your staked LP, and your position will continue earning after each claim. If you want to fully exit, first withdraw your LP tokens from the farm here, then proceed to the final step titled "Claim Initial WETH/XVGBASE" to remove liquidity and receive your underlying tokens back.
           </div>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
