@@ -77,7 +77,7 @@ export function FarmDashboard() {
           />
         </div>
 
-        <div>
+        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Liquidity Flow
           </div>
@@ -109,7 +109,7 @@ export function FarmDashboard() {
           onAddLiquidity={farm.addLiquidity}
         />
 
-        <div>
+        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Farm Performance
           </div>
@@ -134,12 +134,12 @@ export function FarmDashboard() {
           />
         </div>
 
-        <div>
+        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Position Controls
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Stake LP, withdraw positions, and claim XVGBASE rewards from one place. After this step, you will see the Staked LP and Earned Rewards balances!
+            Stake LP, Withdraw LP, and claim XVGBASE rewards from one place. After this step, you will see the Staked LP and Earned Rewards balances! You may claim your $XVGBASE as often as you like, or even redeposit it and earn even more rewards per day! You do NOT have to withdraw your LP position/stake to claim your XVGBASE rewards, and they will still continue earning immediately after all are withdrawn so long as your position is not withdraw. To withdraw everything, go to the last step titled "Claim Initial WETH/XVGBASE"
           </div>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">

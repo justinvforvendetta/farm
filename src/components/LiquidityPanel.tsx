@@ -46,7 +46,8 @@ export function LiquidityPanel({
 }: LiquidityPanelProps) {
   return (
     <motion.div id="add-liquidity" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <Card>
+      <Card className="relative overflow-hidden">
+        <div className="pointer-events-none absolute right-0 top-0 h-36 w-36 rounded-full bg-blue-200/8 blur-3xl" />
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl">Add {tokenSymbol}/{quoteTokenSymbol} Liquidity</CardTitle>
           <p className="text-sm text-slate-200">
@@ -57,7 +58,7 @@ export function LiquidityPanel({
           <p className="break-all text-xs text-slate-300">Pool: {poolAddress}</p>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className="grid gap-2">
+          <div className="grid gap-2 rounded-[24px] border border-blue-100/12 bg-white/[0.03] p-4">
             <div className="flex flex-col gap-1 text-sm text-slate-200 sm:flex-row sm:items-center sm:justify-between">
               <label>{tokenSymbol} amount</label>
               <span>Wallet: {tokenBalance} {tokenSymbol}</span>
@@ -70,7 +71,7 @@ export function LiquidityPanel({
             </div>
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-2 rounded-[24px] border border-blue-100/12 bg-white/[0.03] p-4">
             <div className="flex flex-col gap-1 text-sm text-slate-200 sm:flex-row sm:items-center sm:justify-between">
               <label>{quoteTokenSymbol} amount</label>
               <span>Wallet: {quoteTokenBalance} {quoteTokenSymbol}</span>
@@ -83,7 +84,7 @@ export function LiquidityPanel({
             </div>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-2 rounded-[24px] border border-blue-100/12 bg-white/[0.03] p-4 sm:grid-cols-2 lg:grid-cols-3">
             <Button
               onClick={onApproveToken}
               disabled={busy || !connected || hasTokenApproval}
