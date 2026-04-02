@@ -69,7 +69,7 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                 onClick={onNavigateToFarm}
                 className="inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 shadow-[0_12px_40px_rgba(255,255,255,0.18)] transition hover:bg-slate-100"
               >
-                Open xvgbase Farm
+                Open $XVGBASE Farm
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </div>
@@ -85,7 +85,7 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(74,222,128,0.8)]" />
               </span>
-              Active Farm
+              Active Farms
             </div>
             <div className="mt-4 rounded-[28px] border border-emerald-200/15 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(15,23,42,0.2))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
               <div className="flex items-start justify-between gap-4">
@@ -93,7 +93,11 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                   <div className="text-sm uppercase tracking-[0.26em] text-emerald-100/80">Base</div>
                   <div className="mt-2 text-3xl font-semibold text-white">{farmConfig.projectName}</div>
                 </div>
-                <div className="rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                  </span>
                   Live
                 </div>
               </div>

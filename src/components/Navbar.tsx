@@ -41,10 +41,10 @@ export function Navbar({ currentPath, onNavigate, farmItems }: NavbarProps) {
           </span>
           <span>
             <span className="block text-xs font-semibold uppercase tracking-[0.32em] text-slate-300/70">
-              XVG
+              XVGtokens.com
             </span>
             <span className="block text-lg font-semibold tracking-tight text-white">
-              Multi-Chain Farms
+              Farm
             </span>
           </span>
         </button>
