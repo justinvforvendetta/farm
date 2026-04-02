@@ -105,16 +105,19 @@ export function useFarm(): FarmState {
       ? [
           {
             address: farmConfig.rewardsContractAddress as `0x${string}`,
+            chainId: farmConfig.chainId,
             abi: REWARDS_ABI,
             functionName: "rewardRate",
           },
           {
             address: farmConfig.rewardsContractAddress as `0x${string}`,
+            chainId: farmConfig.chainId,
             abi: REWARDS_ABI,
             functionName: "periodFinish",
           },
           {
             address: farmConfig.rewardsContractAddress as `0x${string}`,
+            chainId: farmConfig.chainId,
             abi: REWARDS_ABI,
             functionName: "totalSupply",
           },
@@ -128,6 +131,7 @@ export function useFarm(): FarmState {
   });
   const { data: walletTokenBalanceData } = useBalance({
     address,
+    chainId: farmConfig.chainId,
     token: farmConfig.tokenAddress as `0x${string}`,
     query: {
       enabled: Boolean(address),
@@ -136,6 +140,7 @@ export function useFarm(): FarmState {
   });
   const { data: walletQuoteTokenBalanceData } = useBalance({
     address,
+    chainId: farmConfig.chainId,
     token: farmConfig.quoteTokenAddress as `0x${string}`,
     query: {
       enabled: Boolean(address),
@@ -144,6 +149,7 @@ export function useFarm(): FarmState {
   });
   const { data: walletLpBalanceData } = useBalance({
     address,
+    chainId: farmConfig.chainId,
     token: farmConfig.lpTokenAddress as `0x${string}`,
     query: {
       enabled: Boolean(address),
@@ -217,8 +223,13 @@ export function useFarm(): FarmState {
     () => (signer ? getV2RouterWriteContract(signer, farmConfig) : null),
     [farmConfig, signer],
   );
+  const isOnFarmChain = (chain?.id ?? farmConfig.chainId) === farmConfig.chainId;
 
   const refreshData = useCallback(async () => {
+    if (!isOnFarmChain) {
+      return;
+    }
+
     if (!provider || !rewardsRead || !lpRead || !tokenRead || !quoteTokenRead || !pairRead || !account) {
       return;
     }
@@ -351,6 +362,7 @@ export function useFarm(): FarmState {
     walletLpBalanceData,
     walletQuoteTokenBalanceData,
     walletTokenBalanceData,
+    isOnFarmChain,
   ]);
 
   useEffect(() => {
@@ -839,6 +851,24 @@ export function useFarm(): FarmState {
   }, [walletLpBalance]);
 
   useEffect(() => {
+    if (isOnFarmChain) {
+      return;
+    }
+
+    setAllowance(0n);
+    setTokenAllowanceToRouter(0n);
+    setQuoteTokenAllowanceToRouter(0n);
+    setLpAllowanceToRouter(0n);
+    setWalletLpBalance(0n);
+    setWalletTokenBalance(0n);
+    setWalletQuoteTokenBalance(0n);
+    setStakedBalance(0n);
+    setEarnedRewards(0n);
+    setPairTokenReserve(0n);
+    setPairQuoteReserve(0n);
+  }, [isOnFarmChain]);
+
+  useEffect(() => {
     if (!account) {
       return;
     }
@@ -918,7 +948,7 @@ export function useFarm(): FarmState {
     return () => {
       cancelled = true;
     };
-  }, [address, chain?.id, connector, isConnected]);
+  }, [address, chain?.id, connector, farmConfig.chainId, farmConfig.chainName, isConnected]);
 
   return {
     provider,
