@@ -50,8 +50,7 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
                   Welcome to the XVGTokens Farm!
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200/85 sm:text-lg">
-                  Access the active XVGTokens farms, review the live pair setup, and jump straight
-                  into staking!
+                  Join one of the XVGToken Farms and start staking right away!
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <div className="farm-landing-pill">
@@ -169,7 +168,7 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
                     </div>
                   </div>
                   <div className="mt-2 text-sm leading-7 text-slate-200/80">
-                    Existing liquidity farming dashboard for the {farm.tokenSymbol}/
+                    Liquidity Farm dashboard for the {farm.tokenSymbol}/
                     {farm.quoteTokenSymbol} LP.
                   </div>
                   <div className="mt-5 grid gap-3 sm:grid-cols-3">
