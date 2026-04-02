@@ -7,8 +7,10 @@ const HOME_ROUTE = "/";
 const XVGBASE_FARM_ROUTE = "/farm/xvgbase";
 
 function normalizePath(pathname: string) {
-  if (pathname === XVGBASE_FARM_ROUTE || pathname === HOME_ROUTE) {
-    return pathname;
+  const normalizedPathname = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+
+  if (normalizedPathname === XVGBASE_FARM_ROUTE || normalizedPathname === HOME_ROUTE) {
+    return normalizedPathname;
   }
 
   return HOME_ROUTE;

@@ -106,7 +106,17 @@ npm run preview
 
 ## GitHub Pages
 
-This repo is configured for GitHub Pages at:
+This repo can be deployed either at the root of a domain or under a subpath.
+
+For a root-domain or subdomain deployment such as:
+
+```text
+https://farm.xvgtokens.com/
+```
+
+use the default build with no extra base-path config.
+
+For a subpath deployment such as GitHub Pages at:
 
 ```text
 https://mobiitz.github.io/farm/
@@ -120,6 +130,7 @@ To deploy it:
 4. In `Settings -> Secrets and variables -> Actions -> Variables`, create one repository variable named `env`.
 5. Paste your full Vite env block into that `env` variable exactly as key/value lines.
 6. Push again or run the `Deploy to GitHub Pages` workflow manually from the `Actions` tab.
+7. Set `VITE_BASE_PATH=/farm` in that deployment environment so built asset URLs resolve correctly.
 
 ## Environment Variables
 
@@ -151,3 +162,6 @@ All runtime configuration is read from Vite env vars:
 - Contract reads refresh after wallet connect and every 10 seconds while connected.
 - Direct liquidity uses the configured V2 router in `src/lib/config.ts` and calls `addLiquidity` for the XVGBASE/WETH pair.
 - If your farm ABI differs from the minimal interface in this repo, replace the entries in `src/lib/abis.ts` with your compiled ABI.
+- `public/.htaccess` adds an Apache SPA fallback so refreshing `/farm/xvgbase` serves `index.html` instead of returning `404`.
+- `public/_redirects` adds the same fallback for hosts that honor Netlify-style redirect rules.
+- `VITE_BASE_PATH` controls the build base. Leave it unset for root deployments like `https://farm.xvgtokens.com/`, or set it to `/farm` for deployments hosted under `/farm/`.
