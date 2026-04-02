@@ -50,7 +50,7 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
               </h1>
               <p className="relative z-[1] mt-5 max-w-2xl text-base leading-8 text-slate-200/85 sm:text-lg">
                 Access the active XVGTokens farms, review the live pair setup, and jump straight
-                into staking with a cleaner path from discovery to deposit.
+                into staking!
               </p>
               <div className="relative z-[1] mt-6 flex flex-wrap gap-3">
                 <div className="farm-landing-pill">
