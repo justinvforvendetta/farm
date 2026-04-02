@@ -8,7 +8,7 @@ import { StakePanel } from "@/components/StakePanel";
 import { StatusAlert } from "@/components/StatusAlert";
 import { WalletActions } from "@/components/WalletActions";
 import { useFarm } from "@/hooks/useFarm";
-import { farmConfig } from "@/lib/config";
+import { useFarmConfig } from "@/lib/farm-context";
 import {
   formatDateTime,
   formatPerDay,
@@ -16,14 +16,15 @@ import {
 } from "@/lib/format";
 
 export function FarmDashboard() {
+  const farmConfig = useFarmConfig();
   const farm = useFarm();
 
   return (
-    <div className="min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden bg-blue-950/30 bg-farm-grid px-4 pb-6 pt-28 text-slate-100 sm:px-6 sm:pb-8 sm:pt-32 md:px-10 md:pb-10">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-blue-200/12 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-gradient-to-r from-transparent via-blue-100/25 to-transparent" />
-      <div className="pointer-events-none absolute left-[-8rem] top-32 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
-      <div className="pointer-events-none absolute right-[-6rem] top-80 h-72 w-72 rounded-full bg-blue-300/10 blur-3xl" />
+    <div className={`farm-dashboard-shell min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden px-4 pb-6 pt-28 text-slate-100 sm:px-6 sm:pb-8 sm:pt-32 md:px-10 md:pb-10 ${farmConfig.theme.backgroundClassName}`}>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[var(--farm-page-top-glow)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-[linear-gradient(90deg,transparent,var(--farm-grid-line-strong),transparent)]" />
+      <div className="pointer-events-none absolute left-[-8rem] top-32 h-64 w-64 rounded-full bg-[var(--farm-orb-left)] blur-3xl" />
+      <div className="pointer-events-none absolute right-[-6rem] top-80 h-72 w-72 rounded-full bg-[var(--farm-orb-right)] blur-3xl" />
       <div className="relative mx-auto grid max-w-6xl gap-4 sm:gap-6">
         <div className="grid gap-4 md:grid-cols-[1.4fr_0.6fr]">
           <WalletActions
@@ -47,7 +48,8 @@ export function FarmDashboard() {
               Wallet Snapshot
             </div>
             <div className="mt-1 text-sm text-slate-200/85">
-              Current balances for your XVGBASE, WETH, and LP positions.
+              Current balances for your {farmConfig.tokenSymbol}, {farmConfig.quoteTokenSymbol},
+              and LP positions.
             </div>
           </div>
         </div>
@@ -77,12 +79,13 @@ export function FarmDashboard() {
           />
         </div>
 
-        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
+        <div className={farmConfig.theme.sectionClassName}>
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Liquidity Flow
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Approve both assets, add liquidity to the $XVGBASE pool, then stake those new Wallet LP tokens below!
+            Approve both assets, add liquidity to the {farmConfig.tokenSymbol} pool, then stake
+            those new wallet LP tokens below.
           </div>
         </div>
         <div id="add-liquidity">
@@ -111,12 +114,13 @@ export function FarmDashboard() {
           />
         </div>
 
-        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
+        <div className={farmConfig.theme.sectionClassName}>
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Farm Performance
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Here you can track the Wallet LP Tokens you have staked for the farm, and your Earned Rewards from staking (updated every ~10 seconds)
+            Track your wallet LP tokens staked in the farm and your earned rewards from staking,
+            updated roughly every 10 seconds.
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -136,12 +140,17 @@ export function FarmDashboard() {
           />
         </div>
 
-        <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
+        <div className={farmConfig.theme.sectionClassName}>
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
             Position Controls
           </div>
           <div className="mb-5 max-w-3xl text-sm text-slate-200/80">
-            Stake LP, withdraw LP, and claim XVGBASE rewards from one place. Once your LP is staked, you will see your Staked LP and Earned Rewards balances update here. You can claim your $XVGBASE rewards as often as you like without withdrawing your staked LP, and your position will continue earning after each claim. If you want to fully exit, first withdraw your LP tokens from the farm here, then proceed to the final step titled "Claim Initial WETH/XVGBASE" to remove liquidity and receive your underlying tokens back.
+            Stake LP, withdraw LP, and claim {farmConfig.tokenSymbol} rewards from one place.
+            Once your LP is staked, your staked LP and earned rewards balances update here. You
+            can claim {farmConfig.tokenSymbol} rewards as often as you like without withdrawing
+            your staked LP, and your position will continue earning after each claim. If you want
+            to fully exit, first withdraw your LP tokens from the farm here, then proceed to the
+            final step to remove liquidity and receive your underlying tokens back.
           </div>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">

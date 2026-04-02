@@ -8,7 +8,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "relative rounded-[28px] border border-blue-100/18 bg-[linear-gradient(180deg,rgba(12,42,144,0.78),rgba(3,18,70,0.78))] text-slate-100 shadow-[0_28px_90px_rgba(2,6,23,0.38),0_0_0_1px_rgba(191,219,254,0.03)] backdrop-blur-xl before:pointer-events-none before:absolute before:right-0 before:top-0 before:h-28 before:w-32 before:rounded-bl-[2.75rem] before:rounded-tr-[28px] before:bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.26),rgba(191,219,254,0.1)_42%,transparent_72%)] before:content-['']",
+        "farm-ui-card relative rounded-[28px] text-slate-100 backdrop-blur-xl before:pointer-events-none before:absolute before:right-0 before:top-0 before:h-28 before:w-32 before:rounded-bl-[2.75rem] before:rounded-tr-[28px] before:content-['']",
         className,
       )}
       {...props}

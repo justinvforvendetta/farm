@@ -7,7 +7,7 @@ import {
   type Eip1193Provider,
 } from "ethers";
 import { useAccount, useBalance, useReadContracts } from "wagmi";
-import { farmConfig } from "@/lib/config";
+import { useFarmConfig } from "@/lib/farm-context";
 import { REWARDS_ABI } from "@/lib/abis";
 import {
   getLpReadContract,
@@ -95,6 +95,7 @@ function formatStatusError(error: unknown, fallback: string) {
 }
 
 export function useFarm(): FarmState {
+  const farmConfig = useFarmConfig();
   const { address, connector, chain, isConnected } = useAccount();
   const rewardsContractReady = isAddress(farmConfig.rewardsContractAddress);
   const {
@@ -177,35 +178,44 @@ export function useFarm(): FarmState {
   const [withdrawInput, setWithdrawInput] = useState("");
 
   const rewardsRead = useMemo(
-    () => (provider ? getRewardsReadContract(provider) : null),
-    [provider],
+    () => (provider ? getRewardsReadContract(provider, farmConfig) : null),
+    [farmConfig, provider],
   );
-  const lpRead = useMemo(() => (provider ? getLpReadContract(provider) : null), [provider]);
+  const lpRead = useMemo(
+    () => (provider ? getLpReadContract(provider, farmConfig) : null),
+    [farmConfig, provider],
+  );
   const tokenRead = useMemo(
     () => (provider ? getTokenReadContract(farmConfig.tokenAddress, provider) : null),
-    [provider],
+    [farmConfig.tokenAddress, provider],
   );
   const quoteTokenRead = useMemo(
     () => (provider ? getTokenReadContract(farmConfig.quoteTokenAddress, provider) : null),
-    [provider],
+    [farmConfig.quoteTokenAddress, provider],
   );
-  const pairRead = useMemo(() => (provider ? getV2PairReadContract(provider) : null), [provider]);
+  const pairRead = useMemo(
+    () => (provider ? getV2PairReadContract(provider, farmConfig) : null),
+    [farmConfig, provider],
+  );
   const rewardsWrite = useMemo(
-    () => (signer ? getRewardsWriteContract(signer) : null),
-    [signer],
+    () => (signer ? getRewardsWriteContract(signer, farmConfig) : null),
+    [farmConfig, signer],
   );
-  const lpWrite = useMemo(() => (signer ? getLpWriteContract(signer) : null), [signer]);
+  const lpWrite = useMemo(
+    () => (signer ? getLpWriteContract(signer, farmConfig) : null),
+    [farmConfig, signer],
+  );
   const tokenWrite = useMemo(
     () => (signer ? getTokenWriteContract(farmConfig.tokenAddress, signer) : null),
-    [signer],
+    [farmConfig.tokenAddress, signer],
   );
   const quoteTokenWrite = useMemo(
     () => (signer ? getTokenWriteContract(farmConfig.quoteTokenAddress, signer) : null),
-    [signer],
+    [farmConfig.quoteTokenAddress, signer],
   );
   const v2RouterWrite = useMemo(
-    () => (signer ? getV2RouterWriteContract(signer) : null),
-    [signer],
+    () => (signer ? getV2RouterWriteContract(signer, farmConfig) : null),
+    [farmConfig, signer],
   );
 
   const refreshData = useCallback(async () => {
@@ -319,7 +329,9 @@ export function useFarm(): FarmState {
         } else {
           setPairTokenReserve(0n);
           setPairQuoteReserve(0n);
-          setStatus("Configured pair does not match the XVGBASE/WETH token addresses.");
+          setStatus(
+            `Configured pair does not match the ${farmConfig.tokenSymbol}/${farmConfig.quoteTokenSymbol} token addresses.`,
+          );
         }
       } else {
         setPairTokenReserve(0n);
@@ -571,15 +583,28 @@ export function useFarm(): FarmState {
       );
 
       const tx = await v2RouterWrite.addLiquidity(
-        farmConfig.tokenAddress,
-        farmConfig.quoteTokenAddress,
-        farmConfig.poolStable,
-        amountTokenDesired,
-        amountQuoteDesired,
-        amountTokenMin,
-        amountQuoteMin,
-        account,
-        deadline,
+        ...(farmConfig.routerKind === "aerodromeV2"
+          ? [
+              farmConfig.tokenAddress,
+              farmConfig.quoteTokenAddress,
+              farmConfig.poolStable,
+              amountTokenDesired,
+              amountQuoteDesired,
+              amountTokenMin,
+              amountQuoteMin,
+              account,
+              deadline,
+            ]
+          : [
+              farmConfig.tokenAddress,
+              farmConfig.quoteTokenAddress,
+              amountTokenDesired,
+              amountQuoteDesired,
+              amountTokenMin,
+              amountQuoteMin,
+              account,
+              deadline,
+            ]),
       );
 
       await tx.wait();
@@ -650,14 +675,26 @@ export function useFarm(): FarmState {
       setStatus(`Removing ${farmConfig.lpSymbol} liquidity...`);
 
       const tx = await v2RouterWrite.removeLiquidity(
-        farmConfig.tokenAddress,
-        farmConfig.quoteTokenAddress,
-        farmConfig.poolStable,
-        liquidity,
-        amountTokenMin,
-        amountQuoteMin,
-        account,
-        deadline,
+        ...(farmConfig.routerKind === "aerodromeV2"
+          ? [
+              farmConfig.tokenAddress,
+              farmConfig.quoteTokenAddress,
+              farmConfig.poolStable,
+              liquidity,
+              amountTokenMin,
+              amountQuoteMin,
+              account,
+              deadline,
+            ]
+          : [
+              farmConfig.tokenAddress,
+              farmConfig.quoteTokenAddress,
+              liquidity,
+              amountTokenMin,
+              amountQuoteMin,
+              account,
+              deadline,
+            ]),
       );
 
       await tx.wait();

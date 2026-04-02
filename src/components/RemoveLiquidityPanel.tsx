@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useFarmConfig } from "@/lib/farm-context";
 
 type RemoveLiquidityPanelProps = {
   lpBalance: string;
@@ -28,13 +29,17 @@ export function RemoveLiquidityPanel({
   onApprove,
   onRemove,
 }: RemoveLiquidityPanelProps) {
+  const farmConfig = useFarmConfig();
+
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg sm:text-xl">Claim Initial WETH/XVGBASE</CardTitle>
+          <CardTitle className="text-lg sm:text-xl">
+            Claim Initial {farmConfig.quoteTokenSymbol}/{farmConfig.tokenSymbol}
+          </CardTitle>
           <p className="text-sm text-slate-200">
-            Remove liquidity from your LP position to receive your underlying XVGBASE and WETH back.
+            Remove liquidity from your LP position to receive your underlying {farmConfig.tokenSymbol} and {farmConfig.quoteTokenSymbol} back.
           </p>
         </CardHeader>
         <CardContent className="grid gap-4">

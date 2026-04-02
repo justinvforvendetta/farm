@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ArrowUpRight,
   CheckCircle2,
   Coins,
   Droplets,
@@ -12,34 +11,14 @@ import {
   Sprout,
   TimerReset,
 } from "lucide-react";
-import { farmConfig } from "@/lib/config";
+import type { FarmConfig } from "@/lib/farms";
 
 type LandingPageProps = {
-  onNavigateToFarm: () => void;
+  farms: FarmConfig[];
+  onNavigateToFarm: (path: string) => void;
 };
 
-export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
-  const detailItems = [
-    {
-      label: "Pair",
-      value: `${farmConfig.tokenSymbol}/${farmConfig.quoteTokenSymbol}`,
-      hint: "Configured LP market",
-      icon: <Droplets className="h-4 w-4" />,
-    },
-    {
-      label: "Chain",
-      value: farmConfig.chainName,
-      hint: "Wallet and contract network",
-      icon: <Orbit className="h-4 w-4" />,
-    },
-    {
-      label: "Rewards",
-      value: farmConfig.tokenSymbol,
-      hint: "Token earned by staking",
-      icon: <Coins className="h-4 w-4" />,
-    },
-  ];
-
+export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
   function formatAddress(address: string) {
     if (address.length < 12) {
       return address;
@@ -74,7 +53,7 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
               <div className="relative z-[1] mt-6 flex flex-wrap gap-3">
                 <div className="farm-landing-pill">
                   <CheckCircle2 className="h-4 w-4" />
-                  Live XVGBASE deployment
+                  Two active farm deployments
                 </div>
                 <div className="farm-landing-pill">
                   <Shield className="h-4 w-4" />
@@ -115,22 +94,21 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                 </div>
               </div>
               <div className="relative z-[1] mt-8 flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  onClick={onNavigateToFarm}
-                  className="farm-landing-action farm-landing-action-market"
-                >
-                  <span>
-                    Open $XVGBASE Farm
-                    <ArrowRight className="ml-2 inline h-4 w-4" />
-                  </span>
-                </button>
-                <a href="#top" className="farm-landing-action farm-landing-action-ghost">
-                  <span>
-                    Explore Details
-                    <ArrowUpRight className="ml-2 inline h-4 w-4" />
-                  </span>
-                </a>
+                {farms.map((farm) => (
+                  <button
+                    key={farm.route}
+                    type="button"
+                    onClick={() => onNavigateToFarm(farm.route)}
+                    className={`farm-landing-action ${
+                      farm.slug === "xvgbsc" ? "farm-landing-action-bsc" : "farm-landing-action-market"
+                    }`}
+                  >
+                    <span>
+                      Open ${farm.projectName} Farm
+                      <ArrowRight className="ml-2 inline h-4 w-4" />
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -147,58 +125,97 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
               </span>
               Active Farms
             </div>
-            <div className="farm-landing-inner-card relative z-[1] mt-4">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-sm uppercase tracking-[0.26em] text-emerald-100/80">Base</div>
-                  <div className="mt-2 text-3xl font-semibold text-white">{farmConfig.projectName}</div>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                  </span>
-                  Live
-                </div>
-              </div>
-              <div className="mt-2 text-sm leading-7 text-slate-200/80">
-                Existing liquidity farming dashboard for the {farmConfig.tokenSymbol}/
-                {farmConfig.quoteTokenSymbol} LP.
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {detailItems.map((item) => (
-                  <div key={item.label} className="farm-landing-mini-card farm-landing-mini-card-interactive">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                        {item.label}
+            <div className="relative z-[1] mt-4 grid gap-4">
+              {farms.map((farm) => (
+                <div
+                  key={farm.slug}
+                  className={`farm-landing-inner-card ${
+                    farm.slug === "xvgbsc" ? "farm-landing-inner-card-bsc" : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-sm uppercase tracking-[0.26em] text-emerald-100/80">
+                        {farm.chainName}
                       </div>
-                      <div className="text-sky-200/80">{item.icon}</div>
+                      <div className="mt-2 text-3xl font-semibold text-white">{farm.projectName}</div>
                     </div>
-                    <div className="mt-2 text-sm font-medium text-white">{item.value}</div>
-                    <div className="mt-1 text-xs text-slate-300/65">{item.hint}</div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                      </span>
+                      Live
+                    </div>
                   </div>
-                ))}
-              </div>
-              <div className="farm-landing-address-list mt-5">
-                <div className="farm-landing-address-row">
-                  <span>Farm Contract</span>
-                  <span>{formatAddress(farmConfig.rewardsContractAddress)}</span>
+                  <div className="mt-2 text-sm leading-7 text-slate-200/80">
+                    Existing liquidity farming dashboard for the {farm.tokenSymbol}/
+                    {farm.quoteTokenSymbol} LP.
+                  </div>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    <div className="farm-landing-mini-card farm-landing-mini-card-interactive">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+                          Pair
+                        </div>
+                        <div className="text-sky-200/80">
+                          <Droplets className="h-4 w-4" />
+                        </div>
+                      </div>
+                      <div className="mt-2 text-sm font-medium text-white">
+                        {farm.tokenSymbol}/{farm.quoteTokenSymbol}
+                      </div>
+                      <div className="mt-1 text-xs text-slate-300/65">Configured LP market</div>
+                    </div>
+                    <div className="farm-landing-mini-card farm-landing-mini-card-interactive">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+                          Chain
+                        </div>
+                        <div className="text-sky-200/80">
+                          <Orbit className="h-4 w-4" />
+                        </div>
+                      </div>
+                      <div className="mt-2 text-sm font-medium text-white">{farm.chainName}</div>
+                      <div className="mt-1 text-xs text-slate-300/65">Wallet and contract network</div>
+                    </div>
+                    <div className="farm-landing-mini-card farm-landing-mini-card-interactive">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+                          Rewards
+                        </div>
+                        <div className="text-sky-200/80">
+                          <Coins className="h-4 w-4" />
+                        </div>
+                      </div>
+                      <div className="mt-2 text-sm font-medium text-white">{farm.tokenSymbol}</div>
+                      <div className="mt-1 text-xs text-slate-300/65">Token earned by staking</div>
+                    </div>
+                  </div>
+                  <div className="farm-landing-address-list mt-5">
+                    <div className="farm-landing-address-row">
+                      <span>Farm Contract</span>
+                      <span>{formatAddress(farm.rewardsContractAddress)}</span>
+                    </div>
+                    <div className="farm-landing-address-row">
+                      <span>LP Contract</span>
+                      <span>{formatAddress(farm.lpTokenAddress)}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onNavigateToFarm(farm.route)}
+                    className={`farm-landing-action mt-6 ${
+                      farm.slug === "xvgbsc" ? "farm-landing-action-bsc" : "farm-landing-action-dex"
+                    }`}
+                  >
+                    <span>
+                      Enter Farm
+                      <ArrowRight className="ml-2 inline h-4 w-4" />
+                    </span>
+                  </button>
                 </div>
-                <div className="farm-landing-address-row">
-                  <span>LP Contract</span>
-                  <span>{formatAddress(farmConfig.lpTokenAddress)}</span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={onNavigateToFarm}
-                className="farm-landing-action farm-landing-action-dex mt-6"
-              >
-                <span>
-                  Enter Farm
-                  <ArrowRight className="ml-2 inline h-4 w-4" />
-                </span>
-              </button>
+              ))}
             </div>
           </motion.div>
         </section>

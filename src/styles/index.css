@@ -7,6 +7,44 @@
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   background: #071a6a;
   color: #e5e7eb;
+  --farm-card-border: rgba(125, 211, 252, 0.18);
+  --farm-card-border-strong: rgba(191, 219, 254, 0.38);
+  --farm-card-bg: linear-gradient(180deg, rgba(12, 42, 144, 0.78), rgba(3, 18, 70, 0.78));
+  --farm-card-shadow:
+    0 28px 90px rgba(2, 6, 23, 0.38),
+    0 0 0 1px rgba(191, 219, 254, 0.03);
+  --farm-card-corner: radial-gradient(
+    circle at top right,
+    rgba(255, 255, 255, 0.26),
+    rgba(191, 219, 254, 0.1) 42%,
+    transparent 72%
+  );
+  --farm-card-sheen: radial-gradient(circle at top left, rgba(191, 219, 254, 0.22), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 30%);
+  --farm-button-default-bg: linear-gradient(180deg, rgba(191, 219, 254, 1), rgba(96, 165, 250, 0.95));
+  --farm-button-secondary-bg: linear-gradient(180deg, rgba(17, 24, 39, 0.14), rgba(30, 64, 175, 0.5));
+  --farm-button-outline-bg: rgba(23, 37, 84, 0.3);
+  --farm-button-outline-border: rgba(191, 219, 254, 0.3);
+  --farm-button-shadow: 0 12px 30px rgba(2, 6, 23, 0.22), 0 0 24px rgba(96, 165, 250, 0.08);
+  --farm-input-border: rgba(125, 211, 252, 0.18);
+  --farm-input-bg: linear-gradient(180deg, rgba(2, 6, 23, 0.18), rgba(30, 64, 175, 0.22));
+  --farm-input-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 18px rgba(37, 99, 235, 0.08);
+  --farm-badge-border: rgba(191, 219, 254, 0.3);
+  --farm-badge-bg: rgba(191, 219, 254, 0.1);
+  --farm-badge-shadow: 0 0 18px rgba(125, 211, 252, 0.14);
+  --farm-badge-secondary-border: rgba(147, 197, 253, 0.22);
+  --farm-badge-secondary-bg: rgba(23, 37, 84, 0.65);
+  --farm-badge-secondary-shadow: 0 0 18px rgba(37, 99, 235, 0.12);
+  --farm-accent-text: rgb(191, 219, 254);
+  --farm-muted-accent: rgba(191, 219, 254, 0.72);
+  --farm-focus-ring: rgba(191, 219, 254, 0.7);
+  --farm-grid-line-strong: rgba(191, 219, 254, 0.25);
+  --farm-metric-icon-border: rgba(191, 219, 254, 0.2);
+  --farm-metric-icon-bg: rgba(191, 219, 254, 0.1);
+  --farm-metric-icon-shadow: 0 0 22px rgba(125, 211, 252, 0.12);
+  --farm-orb-left: rgba(191, 219, 254, 0.12);
+  --farm-orb-right: rgba(103, 232, 249, 0.1);
+  --farm-page-top-glow: linear-gradient(180deg, rgba(191, 219, 254, 0.12), transparent);
 }
 
 * {
@@ -33,6 +71,56 @@ body {
     radial-gradient(circle at top, rgba(125, 211, 252, 0.22), transparent 30%),
     linear-gradient(180deg, #0b2a9d 0%, #071a6a 52%, #041246 100%);
   background-attachment: fixed;
+}
+
+html[data-farm-theme="xvgbsc"],
+body[data-farm-theme="xvgbsc"] {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.08), transparent 18%),
+    radial-gradient(circle at 18% 18%, rgba(250, 204, 21, 0.1), transparent 24%),
+    radial-gradient(circle at 82% 8%, rgba(234, 179, 8, 0.16), transparent 28%),
+    linear-gradient(180deg, #080808 0%, #040404 55%, #000000 100%);
+}
+
+html[data-farm-theme="xvgbsc"] {
+  --farm-card-border: rgba(250, 204, 21, 0.24);
+  --farm-card-border-strong: rgba(250, 204, 21, 0.42);
+  --farm-card-bg: linear-gradient(180deg, rgba(28, 28, 18, 0.92), rgba(6, 6, 6, 0.96));
+  --farm-card-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(250, 204, 21, 0.04);
+  --farm-card-corner: radial-gradient(
+    circle at top right,
+    rgba(250, 204, 21, 0.2),
+    rgba(250, 204, 21, 0.08) 40%,
+    transparent 72%
+  );
+  --farm-card-sheen: radial-gradient(circle at top left, rgba(250, 204, 21, 0.14), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(234, 179, 8, 0.12), transparent 30%);
+  --farm-button-default-bg: linear-gradient(180deg, rgba(254, 240, 138, 1), rgba(234, 179, 8, 0.96));
+  --farm-button-secondary-bg: linear-gradient(180deg, rgba(38, 38, 25, 0.78), rgba(24, 24, 14, 0.92));
+  --farm-button-outline-bg: rgba(24, 24, 14, 0.72);
+  --farm-button-outline-border: rgba(250, 204, 21, 0.28);
+  --farm-button-shadow: 0 12px 30px rgba(0, 0, 0, 0.34), 0 0 26px rgba(250, 204, 21, 0.08);
+  --farm-input-border: rgba(250, 204, 21, 0.22);
+  --farm-input-bg: linear-gradient(180deg, rgba(10, 10, 10, 0.92), rgba(24, 24, 14, 0.96));
+  --farm-input-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 18px rgba(250, 204, 21, 0.06);
+  --farm-badge-border: rgba(250, 204, 21, 0.24);
+  --farm-badge-bg: rgba(250, 204, 21, 0.12);
+  --farm-badge-shadow: 0 0 18px rgba(250, 204, 21, 0.08);
+  --farm-badge-secondary-border: rgba(250, 204, 21, 0.18);
+  --farm-badge-secondary-bg: rgba(20, 20, 12, 0.82);
+  --farm-badge-secondary-shadow: 0 0 18px rgba(250, 204, 21, 0.06);
+  --farm-accent-text: rgb(250, 204, 21);
+  --farm-muted-accent: rgba(253, 224, 71, 0.82);
+  --farm-focus-ring: rgba(250, 204, 21, 0.72);
+  --farm-grid-line-strong: rgba(250, 204, 21, 0.22);
+  --farm-metric-icon-border: rgba(250, 204, 21, 0.22);
+  --farm-metric-icon-bg: rgba(250, 204, 21, 0.1);
+  --farm-metric-icon-shadow: 0 0 22px rgba(250, 204, 21, 0.08);
+  --farm-orb-left: rgba(250, 204, 21, 0.08);
+  --farm-orb-right: rgba(234, 179, 8, 0.08);
+  --farm-page-top-glow: linear-gradient(180deg, rgba(250, 204, 21, 0.08), transparent);
 }
 
 a {
@@ -126,6 +214,11 @@ input {
   background: rgba(7, 12, 22, 0.74);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   padding: 20px;
+}
+
+.farm-landing-inner-card-bsc {
+  border-color: rgba(250, 204, 21, 0.18);
+  background: rgba(12, 12, 8, 0.82);
 }
 
 .farm-landing-mini-card {
@@ -244,6 +337,13 @@ input {
   --token-action-highlight: rgba(204, 251, 241, 0.18);
 }
 
+.farm-landing-action-bsc {
+  --token-action-bg: linear-gradient(135deg, rgba(250, 204, 21, 0.96), rgba(202, 138, 4, 0.96));
+  --token-action-border: rgba(253, 224, 71, 0.36);
+  --token-action-highlight: rgba(255, 255, 255, 0.14);
+  color: #0f0f0f;
+}
+
 .farm-landing-action-ghost {
   --token-action-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.84), rgba(15, 23, 42, 0.72));
   --token-action-border: rgba(148, 163, 184, 0.26);
@@ -288,6 +388,93 @@ input {
   color: rgba(186, 230, 253, 0.94);
   font-weight: 700;
   letter-spacing: 0.08em;
+}
+
+.farm-dashboard-shell {
+  position: relative;
+}
+
+.farm-dashboard-theme-base {
+  background-color: rgba(23, 37, 84, 0.3);
+  background-image:
+    linear-gradient(90deg, rgba(191, 219, 254, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(191, 219, 254, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.farm-dashboard-theme-bsc {
+  background-color: rgba(0, 0, 0, 0.94);
+  background-image:
+    linear-gradient(90deg, rgba(250, 204, 21, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(250, 204, 21, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.farm-section-shell {
+  border-radius: 24px;
+  border: 1px solid var(--farm-card-border);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 16px 20px;
+}
+
+.farm-section-shell-bsc {
+  background: rgba(250, 204, 21, 0.04);
+}
+
+.farm-ui-card {
+  border: 1px solid var(--farm-card-border);
+  background: var(--farm-card-bg);
+  box-shadow: var(--farm-card-shadow);
+}
+
+.farm-ui-card::before {
+  background: var(--farm-card-corner);
+}
+
+.farm-button-default {
+  background: var(--farm-button-default-bg);
+}
+
+.farm-button-secondary {
+  background: var(--farm-button-secondary-bg);
+}
+
+.farm-button-outline {
+  border-color: var(--farm-button-outline-border);
+  background: var(--farm-button-outline-bg);
+}
+
+.farm-input {
+  border-color: var(--farm-input-border);
+  background: var(--farm-input-bg);
+  box-shadow: var(--farm-input-shadow);
+}
+
+.farm-badge-default {
+  border-color: var(--farm-badge-border);
+  background: var(--farm-badge-bg);
+  box-shadow: var(--farm-badge-shadow);
+}
+
+.farm-badge-secondary {
+  border-color: var(--farm-badge-secondary-border);
+  background: var(--farm-badge-secondary-bg);
+  box-shadow: var(--farm-badge-secondary-shadow);
+}
+
+.farm-metric-icon {
+  border: 1px solid var(--farm-metric-icon-border);
+  background: var(--farm-metric-icon-bg);
+  color: var(--farm-accent-text);
+  box-shadow: var(--farm-metric-icon-shadow);
+}
+
+.farm-hero-detail-card {
+  border-radius: 16px;
+  border: 1px solid var(--farm-card-border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 0 24px rgba(2, 6, 23, 0.12);
+  padding: 12px 16px;
 }
 
 @media (max-width: 640px) {

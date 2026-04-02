@@ -4,6 +4,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WalletConnectTrigger } from "@/components/WalletConnectTrigger";
+import { useFarmConfig } from "@/lib/farm-context";
 
 type WalletActionsProps = {
   chainName: string;
@@ -22,15 +23,17 @@ export function WalletActions({
   connected,
   onRefresh,
 }: WalletActionsProps) {
+  const farmConfig = useFarmConfig();
+
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <Card className="relative overflow-hidden before:pointer-events-none before:absolute before:inset-[1px] before:rounded-[26px] before:border before:border-white/5 before:content-['']">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(191,219,254,0.22),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.18),transparent_30%)]" />
-        <div className="pointer-events-none absolute -left-12 top-8 h-40 w-40 rounded-full bg-blue-200/10 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-0 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[var(--farm-card-sheen)]" />
+        <div className="pointer-events-none absolute -left-12 top-8 h-40 w-40 rounded-full bg-[var(--farm-orb-left)] blur-3xl" />
+        <div className="pointer-events-none absolute right-0 top-0 h-52 w-52 rounded-full bg-[var(--farm-orb-right)] blur-3xl" />
         <CardHeader className="relative space-y-4">
-          <div className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-100/70">
-            XVGBASE Yield Farm
+          <div className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--farm-muted-accent)]">
+            {farmConfig.projectName} Yield Farm
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge className="gap-2">
@@ -47,23 +50,26 @@ export function WalletActions({
           </CardTitle>
           <p className="max-w-2xl text-base leading-7 text-slate-200/95">{description}</p>
           <div className="grid gap-3 pt-1 sm:grid-cols-3">
-            <div className="rounded-2xl border border-blue-100/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(30,64,175,0.14))] px-4 py-3 shadow-[0_0_24px_rgba(125,211,252,0.08)]">
+            <div className="farm-hero-detail-card">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/80">
-                <ShieldCheck className="h-4 w-4 text-blue-200" />
+                <ShieldCheck className="h-4 w-4 text-[var(--farm-accent-text)]" />
                 Connect
               </div>
               <div className="mt-2 text-sm text-slate-100">Link wallet and verify balances instantly.</div>
             </div>
-            <div className="rounded-2xl border border-blue-100/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(30,64,175,0.14))] px-4 py-3 shadow-[0_0_24px_rgba(125,211,252,0.08)]">
+            <div className="farm-hero-detail-card">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/80">
-                <Droplets className="h-4 w-4 text-blue-200" />
+                <Droplets className="h-4 w-4 text-[var(--farm-accent-text)]" />
                 Add Liquidity
               </div>
-              <div className="mt-2 text-sm text-slate-100">Fund the XVGBASE/WETH pool and receive LP tokens.</div>
+              <div className="mt-2 text-sm text-slate-100">
+                Fund the {farmConfig.tokenSymbol}/{farmConfig.quoteTokenSymbol} pool and receive
+                LP tokens.
+              </div>
             </div>
-            <div className="rounded-2xl border border-blue-100/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(30,64,175,0.14))] px-4 py-3 shadow-[0_0_24px_rgba(125,211,252,0.08)]">
+            <div className="farm-hero-detail-card">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300/80">
-                <Waves className="h-4 w-4 text-blue-200" />
+                <Waves className="h-4 w-4 text-[var(--farm-accent-text)]" />
                 Farm
               </div>
               <div className="mt-2 text-sm text-slate-100">Stake LP positions and harvest rewards over time.</div>

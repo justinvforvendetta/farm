@@ -13,10 +13,10 @@ type MetricCardProps = {
 export function MetricCard({ icon, title, value, subtitle, delay = 0 }: MetricCardProps) {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { delay } }}>
-      <Card className="overflow-hidden before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-blue-100/40 before:to-transparent before:content-['']">
+      <Card className="overflow-hidden before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-[linear-gradient(90deg,transparent,var(--farm-grid-line-strong),transparent)] before:content-['']">
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-base uppercase tracking-[0.18em] text-slate-300">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-100/20 bg-blue-100/10 text-blue-100 shadow-[0_0_22px_rgba(125,211,252,0.12)]">
+            <span className="farm-metric-icon inline-flex h-10 w-10 items-center justify-center rounded-2xl">
               {icon}
             </span>
             {title}

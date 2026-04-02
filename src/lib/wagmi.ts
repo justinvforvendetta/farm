@@ -8,17 +8,17 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { http } from "wagmi";
-import { base } from "wagmi/chains";
-import { farmConfig } from "@/lib/config";
+import { base, bsc } from "wagmi/chains";
 
 export const wagmiConfig = getDefaultConfig({
-  appName: `${farmConfig.projectName} Farm`,
-  appDescription: `${farmConfig.projectName} LP farm for ${farmConfig.projectTicker}.`,
-  appUrl: "https://mobiitz.github.io/farm/",
-  projectId: farmConfig.walletConnectProjectId,
-  chains: [base],
+  appName: "XVGTokens Farm",
+  appDescription: "Liquidity farms for XVGTokens deployments on Base and BNB Smart Chain.",
+  appUrl: "https://farm.xvgtokens.com/",
+  projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "YOUR_WALLETCONNECT_PROJECT_ID",
+  chains: [base, bsc],
   transports: {
     [base.id]: http(),
+    [bsc.id]: http(),
   },
   wallets: [
     {

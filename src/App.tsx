@@ -2,22 +2,35 @@ import { useEffect, useState } from "react";
 import { FarmDashboard } from "@/components/FarmDashboard";
 import { LandingPage } from "@/components/LandingPage";
 import { Navbar } from "@/components/Navbar";
+import { FarmProvider } from "@/lib/farm-context";
+import { farmConfigs, farmList, type FarmSlug } from "@/lib/farms";
 
 const HOME_ROUTE = "/";
-const XVGBASE_FARM_ROUTE = "/farm/xvgbase";
+const FARM_ROUTES = farmList.map((farm) => farm.route);
 
 function normalizePath(pathname: string) {
   const normalizedPathname = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
 
-  if (normalizedPathname === XVGBASE_FARM_ROUTE || normalizedPathname === HOME_ROUTE) {
+  if (normalizedPathname === HOME_ROUTE || FARM_ROUTES.includes(normalizedPathname)) {
     return normalizedPathname;
   }
 
   return HOME_ROUTE;
 }
 
+function getFarmSlugFromPath(pathname: string): FarmSlug | null {
+  const matchedFarm = farmList.find((farm) => farm.route === pathname);
+  return matchedFarm?.slug ?? null;
+}
+
 export default function App() {
   const [pathname, setPathname] = useState(() => normalizePath(window.location.pathname));
+
+  useEffect(() => {
+    const farmSlug = getFarmSlugFromPath(pathname);
+    document.documentElement.dataset.farmTheme = farmSlug ?? "home";
+    document.body.dataset.farmTheme = farmSlug ?? "home";
+  }, [pathname]);
 
   useEffect(() => {
     function syncViewport() {
@@ -63,22 +76,25 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  const isFarmPage = pathname === XVGBASE_FARM_ROUTE;
+  const activeFarmSlug = getFarmSlugFromPath(pathname);
+  const activeFarm = activeFarmSlug ? farmConfigs[activeFarmSlug] : null;
 
   return (
     <>
       <Navbar
         currentPath={pathname}
         onNavigate={navigate}
-        farmItems={[
-          { label: "XVGBASE", path: XVGBASE_FARM_ROUTE },
-          { label: "XVGBSC", path: "/farm/xvgbsc", disabled: true },
-        ]}
+        farmItems={farmList.map((farm) => ({ label: farm.projectName, path: farm.route }))}
       />
-      {isFarmPage ? (
-        <FarmDashboard />
+      {activeFarm ? (
+        <FarmProvider config={activeFarm}>
+          <FarmDashboard />
+        </FarmProvider>
       ) : (
-        <LandingPage onNavigateToFarm={() => navigate(XVGBASE_FARM_ROUTE)} />
+        <LandingPage
+          farms={farmList}
+          onNavigateToFarm={navigate}
+        />
       )}
     </>
   );
