@@ -38,11 +38,13 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
       <div className="relative mx-auto grid max-w-6xl gap-8">
         <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="farm-landing-eyebrow">
-              <Sprout className="h-4 w-4" />
-              XVG Farm Network
-            </div>
-            <div className="farm-landing-panel mt-6">
+            <div className="farm-landing-panel">
+              <div className="farm-landing-header-box relative z-[1]">
+                <div className="farm-landing-eyebrow">
+                  <Sprout className="h-4 w-4" />
+                  XVG Farm Network
+                </div>
+              </div>
               <h1 className="relative z-[1] max-w-4xl text-4xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
                 Welcome to the XVGTokens Farm!
               </h1>
