@@ -36,7 +36,7 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
       <div className="pointer-events-none absolute left-1/2 top-52 h-80 w-80 -translate-x-1/2 rounded-full border border-emerald-200/10 opacity-20" />
 
       <div className="relative mx-auto grid max-w-6xl gap-8">
-        <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+        <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
             <div className="farm-landing-eyebrow">
               <Sprout className="h-4 w-4" />
