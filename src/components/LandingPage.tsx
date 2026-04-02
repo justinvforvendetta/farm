@@ -39,78 +39,80 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
         <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
             <div className="farm-landing-panel">
-              <div className="farm-landing-header-box relative z-[1]">
-                <div className="farm-landing-eyebrow">
+              <div className="relative z-[1] flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/80">
+                <div className="farm-landing-eyebrow farm-landing-eyebrow-inline">
                   <Sprout className="h-4 w-4" />
                   XVG Farm Network
                 </div>
               </div>
-              <h1 className="relative z-[1] max-w-4xl text-4xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
-                Welcome to the XVGTokens Farm!
-              </h1>
-              <p className="relative z-[1] mt-5 max-w-2xl text-base leading-8 text-slate-200/85 sm:text-lg">
-                Access the active XVGTokens farms, review the live pair setup, and jump straight
-                into staking!
-              </p>
-              <div className="relative z-[1] mt-6 flex flex-wrap gap-3">
-                <div className="farm-landing-pill">
-                  <CheckCircle2 className="h-4 w-4" />
-                  Two active farm deployments
-                </div>
-                <div className="farm-landing-pill">
-                  <Shield className="h-4 w-4" />
-                  Direct contract reads
-                </div>
-                <div className="farm-landing-pill">
-                  <TimerReset className="h-4 w-4" />
-                  Wallet snapshot updates
-                </div>
-              </div>
-              <div className="relative z-[1] mt-6 grid max-w-2xl gap-3 sm:grid-cols-3">
-                <div className="farm-landing-mini-card">
-                  <div className="farm-landing-mini-title">
-                    <Sparkles className="h-4 w-4" />
-                    Easy To Use
+              <div className="farm-landing-inner-card relative z-[1] mt-4">
+                <h1 className="max-w-4xl text-4xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
+                  Welcome to the XVGTokens Farm!
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-8 text-slate-200/85 sm:text-lg">
+                  Access the active XVGTokens farms, review the live pair setup, and jump straight
+                  into staking!
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="farm-landing-pill">
+                    <CheckCircle2 className="h-4 w-4" />
+                    Two active farm deployments
                   </div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/80">
-                    All steps are numbered to get new users started.
+                  <div className="farm-landing-pill">
+                    <Shield className="h-4 w-4" />
+                    Direct contract reads
+                  </div>
+                  <div className="farm-landing-pill">
+                    <TimerReset className="h-4 w-4" />
+                    Wallet snapshot updates
                   </div>
                 </div>
-                <div className="farm-landing-mini-card">
-                  <div className="farm-landing-mini-title">
-                    <Orbit className="h-4 w-4" />
-                    Real Time Rewards
+                <div className="mt-6 grid max-w-2xl gap-3 sm:grid-cols-3">
+                  <div className="farm-landing-mini-card">
+                    <div className="farm-landing-mini-title">
+                      <Sparkles className="h-4 w-4" />
+                      Easy To Use
+                    </div>
+                    <div className="mt-2 text-sm leading-6 text-slate-200/80">
+                      All steps are numbered to get new users started.
+                    </div>
                   </div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/80">
-                    Users can monitor their rewards in real time!
+                  <div className="farm-landing-mini-card">
+                    <div className="farm-landing-mini-title">
+                      <Orbit className="h-4 w-4" />
+                      Real Time Rewards
+                    </div>
+                    <div className="mt-2 text-sm leading-6 text-slate-200/80">
+                      Users can monitor their rewards in real time!
+                    </div>
+                  </div>
+                  <div className="farm-landing-mini-card">
+                    <div className="farm-landing-mini-title">
+                      <ShieldCheck className="h-4 w-4" />
+                      Clear Status
+                    </div>
+                    <div className="mt-2 text-sm leading-6 text-slate-200/80">
+                      Each farm reads the contract directly and shows the current status.
+                    </div>
                   </div>
                 </div>
-                <div className="farm-landing-mini-card">
-                  <div className="farm-landing-mini-title">
-                    <ShieldCheck className="h-4 w-4" />
-                    Clear Status
-                  </div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/80">
-                    Each farm reads the contract directly and shows the current status.
-                  </div>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {farms.map((farm) => (
+                    <button
+                      key={farm.route}
+                      type="button"
+                      onClick={() => onNavigateToFarm(farm.route)}
+                      className={`farm-landing-action ${
+                        farm.slug === "xvgbsc" ? "farm-landing-action-bsc" : "farm-landing-action-market"
+                      }`}
+                    >
+                      <span>
+                        Open ${farm.projectName} Farm
+                        <ArrowRight className="ml-2 inline h-4 w-4" />
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              </div>
-              <div className="relative z-[1] mt-8 flex flex-wrap gap-3">
-                {farms.map((farm) => (
-                  <button
-                    key={farm.route}
-                    type="button"
-                    onClick={() => onNavigateToFarm(farm.route)}
-                    className={`farm-landing-action ${
-                      farm.slug === "xvgbsc" ? "farm-landing-action-bsc" : "farm-landing-action-market"
-                    }`}
-                  >
-                    <span>
-                      Open ${farm.projectName} Farm
-                      <ArrowRight className="ml-2 inline h-4 w-4" />
-                    </span>
-                  </button>
-                ))}
               </div>
             </div>
           </motion.div>

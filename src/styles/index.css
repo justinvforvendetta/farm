@@ -5,7 +5,7 @@
 :root {
   color-scheme: dark;
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-  background: #071a6a;
+  background: #101415;
   color: #e5e7eb;
   --farm-card-border: rgba(125, 211, 252, 0.18);
   --farm-card-border-strong: rgba(191, 219, 254, 0.38);
@@ -64,12 +64,13 @@ body {
   min-width: 320px;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.09), transparent 18%),
-    radial-gradient(circle at 15% 15%, rgba(191, 219, 254, 0.18), transparent 22%),
-    radial-gradient(circle at 85% 10%, rgba(56, 189, 248, 0.24), transparent 26%),
-    radial-gradient(circle at 50% 55%, rgba(37, 99, 235, 0.18), transparent 34%),
-    radial-gradient(circle at top, rgba(125, 211, 252, 0.22), transparent 30%),
-    linear-gradient(180deg, #0b2a9d 0%, #071a6a 52%, #041246 100%);
+    linear-gradient(90deg, rgba(94, 234, 212, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(94, 234, 212, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 15% 12%, rgba(45, 212, 191, 0.08), transparent 24%),
+    radial-gradient(circle at 82% 10%, rgba(45, 212, 191, 0.06), transparent 28%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04), transparent 18%),
+    linear-gradient(180deg, #171b1d 0%, #101415 58%, #0a0d0e 100%);
+  background-size: 46px 46px, 46px 46px, auto, auto, auto, auto;
   background-attachment: fixed;
 }
 
