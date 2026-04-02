@@ -44,3 +44,206 @@ button,
 input {
   font: inherit;
 }
+
+.farm-landing-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.1), transparent 42%),
+    rgba(11, 17, 30, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 26px 60px rgba(2, 6, 23, 0.36);
+  backdrop-filter: blur(18px);
+  padding: 30px 28px 26px;
+}
+
+.farm-landing-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.farm-landing-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto -18%;
+  width: 42%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    rgba(125, 211, 252, 0),
+    rgba(125, 211, 252, 0.16),
+    rgba(125, 211, 252, 0)
+  );
+  transform: skewX(-24deg);
+  filter: blur(12px);
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.farm-landing-panel-compact {
+  padding: 18px 16px 16px;
+  border-radius: 26px;
+}
+
+.farm-landing-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  background: rgba(8, 15, 28, 0.42);
+  color: rgba(186, 230, 253, 0.92);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.farm-landing-eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+}
+
+.farm-landing-inner-card {
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(7, 12, 22, 0.74);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 20px;
+}
+
+.farm-landing-mini-card {
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(7, 12, 22, 0.74);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 14px 16px;
+}
+
+.farm-landing-mini-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(186, 230, 253, 0.92);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.farm-landing-action {
+  --token-action-bg: linear-gradient(135deg, rgba(43, 59, 89, 0.96), rgba(17, 24, 39, 0.96));
+  --token-action-border: rgba(148, 163, 184, 0.28);
+  --token-action-shadow: 0 14px 32px rgba(8, 15, 28, 0.34);
+  --token-action-highlight: rgba(255, 255, 255, 0.12);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--token-action-border);
+  background: var(--token-action-bg);
+  color: #f8fafc;
+  box-shadow: var(--token-action-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease, filter 240ms ease;
+}
+
+.farm-landing-action::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.farm-landing-action::after {
+  content: "";
+  position: absolute;
+  inset: -120% auto auto -30%;
+  width: 42%;
+  height: 240%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--token-action-highlight), rgba(255, 255, 255, 0));
+  transform: rotate(24deg);
+  transition: transform 280ms ease;
+  pointer-events: none;
+}
+
+.farm-landing-action > span {
+  position: relative;
+  z-index: 1;
+}
+
+.farm-landing-action:hover,
+.farm-landing-action:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(8, 15, 28, 0.46);
+  border-color: rgba(191, 219, 254, 0.65);
+  color: #ffffff;
+}
+
+.farm-landing-action:hover::after,
+.farm-landing-action:focus-visible::after {
+  transform: translateX(220%) rotate(24deg);
+}
+
+.farm-landing-action:focus-visible {
+  outline: 2px solid rgba(125, 211, 252, 0.95);
+  outline-offset: 3px;
+}
+
+.farm-landing-action:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+  box-shadow: 0 10px 24px rgba(8, 15, 28, 0.32);
+}
+
+.farm-landing-action-market {
+  --token-action-bg: linear-gradient(135deg, rgba(37, 99, 235, 0.96), rgba(30, 64, 175, 0.96));
+  --token-action-border: rgba(147, 197, 253, 0.36);
+  --token-action-highlight: rgba(255, 255, 255, 0.18);
+}
+
+.farm-landing-action-dex {
+  --token-action-bg: linear-gradient(135deg, rgba(14, 116, 144, 0.96), rgba(15, 118, 110, 0.96));
+  --token-action-border: rgba(94, 234, 212, 0.32);
+  --token-action-highlight: rgba(204, 251, 241, 0.18);
+}
+
+@media (max-width: 640px) {
+  .farm-landing-panel {
+    padding: 24px 18px 22px;
+    border-radius: 22px;
+  }
+
+  .farm-landing-panel-compact {
+    padding: 14px 12px 12px;
+  }
+
+  .farm-landing-inner-card {
+    border-radius: 18px;
+    padding: 16px;
+  }
+}
