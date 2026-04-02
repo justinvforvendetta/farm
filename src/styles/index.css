@@ -221,6 +221,22 @@ input {
   background: rgba(12, 12, 8, 0.82);
 }
 
+.farm-landing-status {
+  border: 1px solid transparent;
+}
+
+.farm-landing-status-live {
+  border-color: rgba(110, 231, 183, 0.25);
+  background: rgba(74, 222, 128, 0.1);
+  color: rgba(209, 250, 229, 0.96);
+}
+
+.farm-landing-status-coming {
+  border-color: rgba(248, 113, 113, 0.28);
+  background: rgba(239, 68, 68, 0.12);
+  color: rgba(254, 202, 202, 0.96);
+}
+
 .farm-landing-mini-card {
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.2);
