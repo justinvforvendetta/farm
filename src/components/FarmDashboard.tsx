@@ -19,7 +19,7 @@ export function FarmDashboard() {
   const farm = useFarm();
 
   return (
-    <div className="min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden bg-blue-950/30 bg-farm-grid px-4 py-6 text-slate-100 sm:px-6 sm:py-8 md:px-10 md:py-10">
+    <div className="min-h-screen min-h-[calc(var(--app-height,1vh)*100)] overflow-x-hidden bg-blue-950/30 bg-farm-grid px-4 pb-6 pt-28 text-slate-100 sm:px-6 sm:pb-8 sm:pt-32 md:px-10 md:pb-10">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-blue-200/12 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-gradient-to-r from-transparent via-blue-100/25 to-transparent" />
       <div className="pointer-events-none absolute left-[-8rem] top-32 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
@@ -85,29 +85,31 @@ export function FarmDashboard() {
             Approve both assets, add liquidity to the $XVGBASE pool, then stake those new Wallet LP tokens below!
           </div>
         </div>
-        <LiquidityPanel
-          tokenSymbol={farmConfig.tokenSymbol}
-          quoteTokenSymbol={farmConfig.quoteTokenSymbol}
-          tokenBalance={formatUnitsSafe(farm.walletTokenBalance, farmConfig.tokenDecimals)}
-          quoteTokenBalance={formatUnitsSafe(
-            farm.walletQuoteTokenBalance,
-            farmConfig.quoteTokenDecimals,
-          )}
-          tokenValue={farm.liquidityTokenInput}
-          quoteValue={farm.liquidityQuoteInput}
-          hasTokenApproval={farm.hasLiquidityTokenApproval}
-          hasQuoteApproval={farm.hasLiquidityQuoteApproval}
-          busy={farm.busy}
-          connected={Boolean(farm.account)}
-          poolAddress={farmConfig.v2PoolAddress}
-          onTokenValueChange={farm.setLiquidityTokenInput}
-          onQuoteValueChange={farm.setLiquidityQuoteInput}
-          onTokenMax={farm.fillMaxLiquidityToken}
-          onQuoteMax={farm.fillMaxLiquidityQuote}
-          onApproveToken={farm.approveTokenForRouter}
-          onApproveQuoteToken={farm.approveQuoteTokenForRouter}
-          onAddLiquidity={farm.addLiquidity}
-        />
+        <div id="add-liquidity">
+          <LiquidityPanel
+            tokenSymbol={farmConfig.tokenSymbol}
+            quoteTokenSymbol={farmConfig.quoteTokenSymbol}
+            tokenBalance={formatUnitsSafe(farm.walletTokenBalance, farmConfig.tokenDecimals)}
+            quoteTokenBalance={formatUnitsSafe(
+              farm.walletQuoteTokenBalance,
+              farmConfig.quoteTokenDecimals,
+            )}
+            tokenValue={farm.liquidityTokenInput}
+            quoteValue={farm.liquidityQuoteInput}
+            hasTokenApproval={farm.hasLiquidityTokenApproval}
+            hasQuoteApproval={farm.hasLiquidityQuoteApproval}
+            busy={farm.busy}
+            connected={Boolean(farm.account)}
+            poolAddress={farmConfig.v2PoolAddress}
+            onTokenValueChange={farm.setLiquidityTokenInput}
+            onQuoteValueChange={farm.setLiquidityQuoteInput}
+            onTokenMax={farm.fillMaxLiquidityToken}
+            onQuoteMax={farm.fillMaxLiquidityQuote}
+            onApproveToken={farm.approveTokenForRouter}
+            onApproveQuoteToken={farm.approveQuoteTokenForRouter}
+            onAddLiquidity={farm.addLiquidity}
+          />
+        </div>
 
         <div className="rounded-[24px] border border-blue-100/10 bg-white/[0.025] px-4 py-4 sm:px-5">
           <div className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-slate-100/92">
