@@ -3,7 +3,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   CheckCircle2,
-  CircleDot,
   Coins,
   Droplets,
   Orbit,
@@ -38,21 +37,6 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
       value: farmConfig.tokenSymbol,
       hint: "Token earned by staking",
       icon: <Coins className="h-4 w-4" />,
-    },
-  ];
-
-  const workflowSteps = [
-    {
-      title: "Add liquidity",
-      description: `Supply ${farmConfig.tokenSymbol} and ${farmConfig.quoteTokenSymbol} into the configured pool.`,
-    },
-    {
-      title: "Stake LP",
-      description: `Deposit your ${farmConfig.lpSymbol} into the live rewards contract.`,
-    },
-    {
-      title: "Track and claim",
-      description: `Monitor balances, claim ${farmConfig.tokenSymbol}, or exit when you want.`,
     },
   ];
 
@@ -141,7 +125,7 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                     <ArrowRight className="ml-2 inline h-4 w-4" />
                   </span>
                 </button>
-                <a href="#farm-overview" className="farm-landing-action farm-landing-action-ghost">
+                <a href="#top" className="farm-landing-action farm-landing-action-ghost">
                   <span>
                     Explore Details
                     <ArrowUpRight className="ml-2 inline h-4 w-4" />
@@ -215,76 +199,6 @@ export function LandingPage({ onNavigateToFarm }: LandingPageProps) {
                   <ArrowRight className="ml-2 inline h-4 w-4" />
                 </span>
               </button>
-            </div>
-          </motion.div>
-        </section>
-
-        <section id="farm-overview" className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.12 } }}
-            className="farm-landing-panel"
-          >
-            <div className="relative z-[1]">
-              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/80">
-                Farm Overview
-              </div>
-              <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
-                A clearer front page before users enter the dashboard
-              </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-200/80 sm:text-base">
-                The live farm view already carries strong visual detail. This front page now
-                mirrors that intent with quick context, deployment hints, and a smoother transition
-                into the actual staking workflow.
-              </p>
-            </div>
-
-            <div className="relative z-[1] mt-6 grid gap-3 sm:grid-cols-3">
-              {workflowSteps.map((step, index) => (
-                <div key={step.title} className="farm-landing-step-card">
-                  <div className="farm-landing-step-index">
-                    <CircleDot className="h-4 w-4" />
-                    Step {index + 1}
-                  </div>
-                  <div className="mt-3 text-base font-semibold text-white">{step.title}</div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/76">{step.description}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.18 } }}
-            className="farm-landing-panel farm-landing-panel-compact"
-          >
-            <div className="relative z-[1]">
-              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-300/80">
-                Quick Notes
-              </div>
-              <div className="mt-4 grid gap-3">
-                <div className="farm-landing-note-card">
-                  <div className="farm-landing-note-title">Wallet-first flow</div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/78">
-                    Users can connect, verify balances, and move from liquidity to staking without
-                    leaving the farm experience.
-                  </div>
-                </div>
-                <div className="farm-landing-note-card">
-                  <div className="farm-landing-note-title">Visible network context</div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/78">
-                    The pair, chain, LP token, and rewards contract are surfaced earlier so the
-                    user has better context before clicking through.
-                  </div>
-                </div>
-                <div className="farm-landing-note-card">
-                  <div className="farm-landing-note-title">Cleaner handoff into staking</div>
-                  <div className="mt-2 text-sm leading-6 text-slate-200/78">
-                    The front page now feels less like a placeholder and more like the opening
-                    layer of the actual dashboard.
-                  </div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </section>
