@@ -181,8 +181,8 @@ export function FarmDashboard() {
               value={farm.withdrawInput}
               onValueChange={farm.setWithdrawInput}
               onMax={farm.fillMaxWithdraw}
-              primaryActionLabel={`Claim ${farmConfig.tokenSymbol}`}
-              secondaryActionLabel="Withdraw LP"
+              primaryActionLabel={`Claim ${farmConfig.tokenSymbol} Rewards only`}
+              secondaryActionLabel="Withdraw LP Staking Tokens"
               onPrimaryAction={farm.claimRewards}
               onSecondaryAction={farm.withdrawLp}
               primaryDisabled={farm.busy || !farm.account}
