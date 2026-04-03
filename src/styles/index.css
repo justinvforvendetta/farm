@@ -74,6 +74,15 @@ body {
   background-attachment: fixed;
 }
 
+html[data-farm-theme="xvgbase"],
+body[data-farm-theme="xvgbase"] {
+  background:
+    radial-gradient(circle at 16% 14%, rgba(125, 211, 252, 0.1), transparent 24%),
+    radial-gradient(circle at 84% 10%, rgba(56, 189, 248, 0.08), transparent 28%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 18%),
+    linear-gradient(180deg, #171b1d 0%, #101415 58%, #0a0d0e 100%);
+}
+
 html[data-farm-theme="xvgbsc"],
 body[data-farm-theme="xvgbsc"] {
   background:
