@@ -94,6 +94,26 @@ function formatStatusError(error: unknown, fallback: string) {
   return message.length > 220 ? `${message.slice(0, 217)}...` : message;
 }
 
+async function waitForConfirmedTransaction(
+  tx: { hash?: string | null; wait: () => Promise<unknown> },
+  provider: BrowserProvider | null,
+) {
+  try {
+    await tx.wait();
+    return;
+  } catch (error) {
+    if (provider && tx.hash) {
+      const receipt = await provider.waitForTransaction(tx.hash, 1, 15_000);
+
+      if (receipt?.status === 1) {
+        return;
+      }
+    }
+
+    throw error;
+  }
+}
+
 export function useFarm(): FarmState {
   const farmConfig = useFarmConfig();
   const { address, connector, chain, isConnected } = useAccount();
@@ -480,7 +500,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus("Sending LP approval...");
       const tx = await lpWrite.approve(farmConfig.rewardsContractAddress, MaxUint256);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("LP approval confirmed.");
       await refreshData();
     } catch (error) {
@@ -500,7 +520,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus(`Approving ${farmConfig.tokenSymbol} for the V2 router...`);
       const tx = await tokenWrite.approve(farmConfig.v2RouterAddress, MaxUint256);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus(`${farmConfig.tokenSymbol} approval confirmed.`);
       await refreshData();
     } catch (error) {
@@ -520,7 +540,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus(`Approving ${farmConfig.quoteTokenSymbol} for the V2 router...`);
       const tx = await quoteTokenWrite.approve(farmConfig.v2RouterAddress, MaxUint256);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus(`${farmConfig.quoteTokenSymbol} approval confirmed.`);
       await refreshData();
     } catch (error) {
@@ -540,7 +560,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus(`Approving ${farmConfig.lpSymbol} for the V2 router...`);
       const tx = await lpWrite.approve(farmConfig.v2RouterAddress, MaxUint256);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus(`${farmConfig.lpSymbol} router approval confirmed.`);
       await refreshData();
     } catch (error) {
@@ -630,7 +650,7 @@ export function useFarm(): FarmState {
             ]),
       );
 
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("Liquidity added. Your LP tokens are ready to stake.");
       setLiquidityTokenInput("");
       setLiquidityQuoteInput("");
@@ -719,7 +739,7 @@ export function useFarm(): FarmState {
             ]),
       );
 
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus(`Liquidity removed. ${farmConfig.tokenSymbol} and ${farmConfig.quoteTokenSymbol} returned to your wallet.`);
       setRemoveLiquidityInput("");
       await refreshData();
@@ -757,7 +777,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus("Submitting stake transaction...");
       const tx = await rewardsWrite.stake(amount);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("Stake confirmed.");
       setStakeInput("");
       await refreshData();
@@ -785,7 +805,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus("Submitting withdraw transaction...");
       const tx = await rewardsWrite.withdraw(amount);
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("Withdraw confirmed.");
       setWithdrawInput("");
       await refreshData();
@@ -806,7 +826,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus(`Claiming ${farmConfig.tokenSymbol} rewards...`);
       const tx = await rewardsWrite.getReward();
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("Rewards claimed.");
       await refreshData();
     } catch (error) {
@@ -826,7 +846,7 @@ export function useFarm(): FarmState {
       setBusy(true);
       setStatus("Exiting farm: withdrawing LP and claiming rewards...");
       const tx = await rewardsWrite.exit();
-      await tx.wait();
+      await waitForConfirmedTransaction(tx, provider);
       setStatus("Exit confirmed.");
       await refreshData();
     } catch (error) {
