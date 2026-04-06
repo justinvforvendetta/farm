@@ -143,28 +143,12 @@ export function LandingPage({ farms, onNavigateToFarm }: LandingPageProps) {
                       </div>
                       <div className="mt-2 text-3xl font-semibold text-white">{farm.projectName}</div>
                     </div>
-                    <div
-                      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] ${
-                        farm.slug === "xvgbsc"
-                          ? "farm-landing-status farm-landing-status-coming"
-                          : "farm-landing-status farm-landing-status-live"
-                      }`}
-                    >
+                    <div className="farm-landing-status farm-landing-status-live inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em]">
                       <span className="relative flex h-2.5 w-2.5">
-                        <span
-                          className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${
-                            farm.slug === "xvgbsc" ? "bg-red-500" : "bg-emerald-400"
-                          }`}
-                        />
-                        <span
-                          className={`relative inline-flex h-2.5 w-2.5 rounded-full ${
-                            farm.slug === "xvgbsc"
-                              ? "bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.8)]"
-                              : "bg-emerald-400"
-                          }`}
-                        />
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(74,222,128,0.8)]" />
                       </span>
-                      {farm.slug === "xvgbsc" ? "Coming Online" : "Live"}
+                      Live
                     </div>
                   </div>
                   <div className="mt-2 text-sm leading-7 text-slate-200/80">
