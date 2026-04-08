@@ -5,6 +5,7 @@ import { REWARDS_ABI } from "@/lib/abis";
 import type { FarmConfig, FarmSlug } from "@/lib/farms";
 
 export type LandingFarmSummary = {
+  status: "unconfigured" | "loading" | "ready" | "error";
   rewardRate: bigint | null;
 };
 
@@ -40,14 +41,24 @@ export function useLandingFarmSummaries(farms: FarmConfig[]) {
 
     for (const farm of farms) {
       if (!isAddress(farm.rewardsContractAddress)) {
-        next[farm.slug] = { rewardRate: null };
+        next[farm.slug] = { status: "unconfigured", rewardRate: null };
         continue;
       }
 
       const entry = data?.[resultIndex] as
         | { status?: string; result?: bigint | null }
         | undefined;
+      const status =
+        entry?.status === "success"
+          ? "ready"
+          : entry != null
+            ? "error"
+            : isLoading || isFetching
+              ? "loading"
+              : "error";
+
       next[farm.slug] = {
+        status,
         rewardRate:
           entry?.status === "success" && typeof entry.result === "bigint" ? entry.result : null,
       };

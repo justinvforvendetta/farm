@@ -143,6 +143,8 @@ All runtime configuration is read from Vite env vars.
 Shared across all farms:
 
 - `VITE_WALLETCONNECT_PROJECT_ID`
+- `VITE_BASE_RPC_URL`
+- `VITE_BSC_RPC_URL`
 
 Farm-scoped variables use explicit prefixes:
 

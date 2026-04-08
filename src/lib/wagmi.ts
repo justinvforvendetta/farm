@@ -10,6 +10,9 @@ import {
 import { http } from "wagmi";
 import { base, bsc } from "wagmi/chains";
 
+const baseRpcUrl = import.meta.env.VITE_BASE_RPC_URL?.trim() || undefined;
+const bscRpcUrl = import.meta.env.VITE_BSC_RPC_URL?.trim() || undefined;
+
 export const wagmiConfig = getDefaultConfig({
   appName: "XVGTokens Farm",
   appDescription: "Liquidity farms for XVGTokens deployments on Base and BNB Smart Chain.",
@@ -17,8 +20,8 @@ export const wagmiConfig = getDefaultConfig({
   projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "YOUR_WALLETCONNECT_PROJECT_ID",
   chains: [base, bsc],
   transports: {
-    [base.id]: http(),
-    [bsc.id]: http(),
+    [base.id]: http(baseRpcUrl),
+    [bsc.id]: http(bscRpcUrl),
   },
   wallets: [
     {

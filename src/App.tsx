@@ -38,7 +38,6 @@ export default function App() {
     function syncViewport() {
       const viewportHeight = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--app-height", `${viewportHeight}px`);
-      window.dispatchEvent(new Event("resize"));
     }
 
     function handleVisibilityChange() {

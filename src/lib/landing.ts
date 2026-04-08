@@ -1,15 +1,22 @@
+import type { LandingFarmSummary } from "@/hooks/useLandingFarmSummaries";
 import type { FarmConfig } from "@/lib/farms";
 import { formatPerDay } from "@/lib/format";
-import { isAddress } from "ethers";
 
-export function formatLandingRewardRate(farm: FarmConfig, rewardRate: bigint | null) {
-  if (!isAddress(farm.rewardsContractAddress)) {
+export function formatLandingRewardRate(
+  farm: FarmConfig,
+  summary?: LandingFarmSummary,
+) {
+  if (summary?.status === "unconfigured") {
     return "Not configured";
   }
 
-  if (rewardRate == null) {
+  if (summary?.status === "error") {
+    return "RPC unavailable";
+  }
+
+  if (!summary || summary.status === "loading" || summary.rewardRate == null) {
     return "Loading...";
   }
 
-  return `${formatPerDay(rewardRate, farm.tokenDecimals)} ${farm.tokenSymbol}/day`;
+  return `${formatPerDay(summary.rewardRate, farm.tokenDecimals)} ${farm.tokenSymbol}/day`;
 }

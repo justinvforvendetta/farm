@@ -31,7 +31,7 @@ export function LandingPage({ farms, farmSummaries, onNavigateToFarm }: LandingP
   }
 
   function getRewardRateLabel(farm: FarmConfig) {
-    return formatLandingRewardRate(farm, farmSummaries[farm.slug]?.rewardRate ?? null);
+    return formatLandingRewardRate(farm, farmSummaries[farm.slug]);
   }
 
   return (
