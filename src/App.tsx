@@ -84,7 +84,7 @@ export default function App() {
       <Navbar
         currentPath={pathname}
         onNavigate={navigate}
-        farmItems={farmList.map((farm) => ({ label: farm.projectName, path: farm.route }))}
+        farms={farmList}
       />
       {activeFarm ? (
         <FarmProvider config={activeFarm}>

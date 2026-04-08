@@ -1,21 +1,53 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Sprout } from "lucide-react";
-
-type FarmItem = {
-  label: string;
-  path: string;
-  disabled?: boolean;
-};
+import { useAccount, useSwitchChain } from "wagmi";
+import type { FarmConfig } from "@/lib/farms";
 
 type NavbarProps = {
   currentPath: string;
   onNavigate: (path: string) => void;
-  farmItems: FarmItem[];
+  farms: FarmConfig[];
 };
 
-export function Navbar({ currentPath, onNavigate, farmItems }: NavbarProps) {
+function getNetworkLabel(farm: FarmConfig) {
+  if (farm.chainId === 8453) {
+    return "Base";
+  }
+
+  if (farm.chainId === 56) {
+    return "BNB";
+  }
+
+  return farm.chainName;
+}
+
+export function Navbar({ currentPath, onNavigate, farms }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const { isConnected, chain } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
+
+  const activeFarm = farms.find((farm) => farm.route === currentPath) ?? null;
+  const selectedNetwork = activeFarm?.slug ?? "";
+
+  async function handleNetworkChange(nextSlug: string) {
+    const nextFarm = farms.find((farm) => farm.slug === nextSlug);
+    if (!nextFarm) {
+      return;
+    }
+
+    onNavigate(nextFarm.route);
+
+    if (!isConnected || chain?.id === nextFarm.chainId || !switchChainAsync) {
+      return;
+    }
+
+    try {
+      await switchChainAsync({ chainId: nextFarm.chainId });
+    } catch (error) {
+      console.error(`Failed to switch wallet to ${nextFarm.chainName}.`, error);
+    }
+  }
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -49,7 +81,33 @@ export function Navbar({ currentPath, onNavigate, farmItems }: NavbarProps) {
           </span>
         </button>
 
-        <nav className="flex items-center gap-3 text-sm text-slate-100">
+        <nav className="flex items-center gap-2 text-sm text-slate-100 sm:gap-3">
+          <label className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-slate-200 sm:gap-3">
+            <span className="hidden text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:inline">
+              Network
+            </span>
+            <select
+              aria-label="Select network"
+              value={selectedNetwork}
+              onChange={(event) => {
+                void handleNetworkChange(event.target.value);
+              }}
+              className="min-w-[4.5rem] bg-transparent text-sm font-medium text-white outline-none sm:min-w-[7rem]"
+            >
+              <option value="" disabled className="bg-slate-950 text-slate-300">
+                Select
+              </option>
+              {farms.map((farm) => (
+                <option
+                  key={farm.slug}
+                  value={farm.slug}
+                  className="bg-slate-950 text-slate-100"
+                >
+                  {getNetworkLabel(farm)}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             type="button"
             onClick={() => onNavigate("/")}
@@ -78,33 +136,24 @@ export function Navbar({ currentPath, onNavigate, farmItems }: NavbarProps) {
             </button>
             {menuOpen ? (
               <div className="absolute right-0 top-[calc(100%+0.75rem)] min-w-[12rem] rounded-3xl border border-white/10 bg-slate-950/92 p-2 shadow-[0_24px_90px_rgba(15,23,42,0.55)] backdrop-blur-xl">
-                {farmItems.map((farmItem) => {
-                  const active = currentPath === farmItem.path;
+                {farms.map((farm) => {
+                  const active = currentPath === farm.route;
 
                   return (
                     <button
-                      key={farmItem.path}
+                      key={farm.route}
                       type="button"
                       onClick={() => {
-                        if (farmItem.disabled) {
-                          return;
-                        }
-
                         setMenuOpen(false);
-                        onNavigate(farmItem.path);
+                        void handleNetworkChange(farm.slug);
                       }}
-                      disabled={farmItem.disabled}
                       className={`w-full rounded-2xl px-4 py-3 text-left text-sm uppercase tracking-[0.18em] transition ${
-                        farmItem.disabled
-                          ? "cursor-not-allowed text-slate-500"
-                          : ""
-                      } ${
                         active
                           ? "bg-emerald-400/14 text-white"
                           : "text-slate-200 hover:bg-white/8 hover:text-white"
                       }`}
                     >
-                      {farmItem.label}
+                      {farm.projectName}
                     </button>
                   );
                 })}
