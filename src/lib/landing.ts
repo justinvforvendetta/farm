@@ -10,10 +10,6 @@ export function formatLandingRewardRate(
     return "Not configured";
   }
 
-  if (summary?.status === "error") {
-    return "RPC unavailable";
-  }
-
   if (!summary || summary.status === "loading" || summary.rewardRate == null) {
     return "Loading...";
   }

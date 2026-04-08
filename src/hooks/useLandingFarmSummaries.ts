@@ -1,28 +1,36 @@
 import { isAddress } from "ethers";
-import { useReadContract } from "wagmi";
+import { useReadContracts } from "wagmi";
 import { REWARDS_ABI } from "@/lib/abis";
 import type { FarmConfig, FarmSlug } from "@/lib/farms";
 
 export type LandingFarmSummary = {
-  status: "unconfigured" | "loading" | "ready" | "error";
+  status: "unconfigured" | "loading" | "ready";
   rewardRate: bigint | null;
 };
 
 function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
   const enabled = Boolean(farm && isAddress(farm.rewardsContractAddress));
 
-  const { data, isLoading, isFetching, isError } = useReadContract({
-    address: enabled ? (farm!.rewardsContractAddress as `0x${string}`) : undefined,
-    chainId: farm?.chainId,
-    abi: REWARDS_ABI as never,
-    functionName: "rewardRate",
+  const { data, isLoading, isFetching } = useReadContracts({
+    contracts: enabled
+      ? [
+          {
+            address: farm!.rewardsContractAddress as `0x${string}`,
+            chainId: farm!.chainId,
+            abi: REWARDS_ABI as never,
+            functionName: "rewardRate" as const,
+          },
+        ]
+      : [],
+    allowFailure: true,
     query: {
       enabled,
       staleTime: 30_000,
       refetchInterval: 30_000,
       refetchOnMount: true,
       refetchOnWindowFocus: true,
-      retry: 1,
+      retry: 6,
+      retryDelay: (attempt) => Math.min(1_000 * 2 ** attempt, 10_000),
     },
   });
 
@@ -33,29 +41,22 @@ function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
     };
   }
 
-  if (typeof data === "bigint") {
+  const rewardRateResult = data?.[0] as
+    | { status?: string; result?: bigint | null }
+    | undefined;
+
+  if (
+    rewardRateResult?.status === "success" &&
+    typeof rewardRateResult.result === "bigint"
+  ) {
     return {
       status: "ready",
-      rewardRate: data,
-    };
-  }
-
-  if (isLoading || isFetching) {
-    return {
-      status: "loading",
-      rewardRate: null,
-    };
-  }
-
-  if (isError) {
-    return {
-      status: "error",
-      rewardRate: null,
+      rewardRate: rewardRateResult.result,
     };
   }
 
   return {
-    status: "error",
+    status: isLoading || isFetching ? "loading" : "loading",
     rewardRate: null,
   };
 }
