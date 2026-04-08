@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FarmDashboard } from "@/components/FarmDashboard";
 import { LandingPage } from "@/components/LandingPage";
+import { useLandingFarmSummaries } from "@/hooks/useLandingFarmSummaries";
 import { Navbar } from "@/components/Navbar";
 import { FarmProvider } from "@/lib/farm-context";
 import { farmConfigs, farmList, type FarmSlug } from "@/lib/farms";
@@ -25,6 +26,7 @@ function getFarmSlugFromPath(pathname: string): FarmSlug | null {
 
 export default function App() {
   const [pathname, setPathname] = useState(() => normalizePath(window.location.pathname));
+  const landingFarmSummaries = useLandingFarmSummaries(farmList);
 
   useEffect(() => {
     const farmSlug = getFarmSlugFromPath(pathname);
@@ -93,6 +95,7 @@ export default function App() {
       ) : (
         <LandingPage
           farms={farmList}
+          farmSummaries={landingFarmSummaries.summaries}
           onNavigateToFarm={navigate}
         />
       )}
