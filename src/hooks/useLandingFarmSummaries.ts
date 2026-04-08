@@ -1,92 +1,46 @@
-import { useEffect, useState } from "react";
-import { isAddress } from "ethers";
-import { useReadContracts } from "wagmi";
-import { REWARDS_ABI } from "@/lib/abis";
 import type { FarmConfig, FarmSlug } from "@/lib/farms";
 
 export type LandingFarmSummary = {
-  status: "unconfigured" | "loading" | "ready";
-  rewardRate: bigint | null;
+  status: "unconfigured" | "ready";
+  rewardPerDay: number | null;
 };
 
-function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
-  const enabled = Boolean(farm && isAddress(farm.rewardsContractAddress));
-  const [rewardRate, setRewardRate] = useState<bigint | null>(null);
+function getLandingRewardEnv(slug: FarmSlug) {
+  return slug === "xvgbase" ? import.meta.env.VITE_BASE_REWARD : import.meta.env.VITE_BSC_REWARD;
+}
 
-  const { data } = useReadContracts({
-    contracts: enabled
-      ? [
-          {
-            address: farm!.rewardsContractAddress as `0x${string}`,
-            chainId: farm!.chainId,
-            abi: REWARDS_ABI as never,
-            functionName: "rewardRate" as const,
-          },
-        ]
-      : [],
-    allowFailure: true,
-    query: {
-      enabled,
-      staleTime: 30_000,
-      refetchInterval: 30_000,
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
-    },
-  });
+function getFarmRewardSummary(farm: FarmConfig): LandingFarmSummary {
+  const raw = getLandingRewardEnv(farm.slug);
 
-  useEffect(() => {
-    if (!enabled) {
-      setRewardRate(null);
-      return;
-    }
-
-    const rewardRateResult = data?.[0] as
-      | { status?: string; result?: bigint | null }
-      | undefined;
-
-    if (
-      rewardRateResult?.status === "success" &&
-      typeof rewardRateResult.result === "bigint"
-    ) {
-      setRewardRate(rewardRateResult.result);
-    }
-  }, [data, enabled]);
-
-  if (!farm || !enabled) {
+  if (typeof raw !== "string" || raw.trim().length === 0) {
     return {
       status: "unconfigured",
-      rewardRate: null,
+      rewardPerDay: null,
     };
   }
 
-  if (rewardRate != null) {
+  const parsed = Number(raw.trim());
+  if (!Number.isFinite(parsed)) {
     return {
-      status: "ready",
-      rewardRate,
+      status: "unconfigured",
+      rewardPerDay: null,
     };
   }
 
   return {
-    status: "loading",
-    rewardRate: null,
+    status: "ready",
+    rewardPerDay: parsed,
   };
 }
 
 export function useLandingFarmSummaries(farms: FarmConfig[]) {
-  const xvgbaseFarm = farms.find((farm) => farm.slug === "xvgbase");
-  const xvgbscFarm = farms.find((farm) => farm.slug === "xvgbsc");
-
-  const xvgbaseSummary = useFarmRewardRateSummary(xvgbaseFarm);
-  const xvgbscSummary = useFarmRewardRateSummary(xvgbscFarm);
-
-  const summaries = {
-    xvgbase: xvgbaseSummary,
-    xvgbsc: xvgbscSummary,
-  } as Record<FarmSlug, LandingFarmSummary>;
+  const summaries = {} as Record<FarmSlug, LandingFarmSummary>;
+  for (const farm of farms) {
+    summaries[farm.slug] = getFarmRewardSummary(farm);
+  }
 
   return {
     summaries,
-    isLoading:
-      xvgbaseSummary.status === "loading" || xvgbscSummary.status === "loading",
+    isLoading: false,
   };
 }

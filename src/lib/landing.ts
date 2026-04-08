@@ -1,7 +1,5 @@
 import type { LandingFarmSummary } from "@/hooks/useLandingFarmSummaries";
 import type { FarmConfig } from "@/lib/farms";
-import { formatPerDay } from "@/lib/format";
-
 export function formatLandingRewardRate(
   farm: FarmConfig,
   summary?: LandingFarmSummary,
@@ -10,9 +8,12 @@ export function formatLandingRewardRate(
     return "Not configured";
   }
 
-  if (!summary || summary.status === "loading" || summary.rewardRate == null) {
+  if (!summary || summary.rewardPerDay == null) {
     return "Loading...";
   }
 
-  return `${formatPerDay(summary.rewardRate, farm.tokenDecimals)} ${farm.tokenSymbol}/day`;
+  return `${summary.rewardPerDay.toLocaleString("en-US", {
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  })} ${farm.tokenSymbol}/day`;
 }
