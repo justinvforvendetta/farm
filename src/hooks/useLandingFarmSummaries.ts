@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { isAddress } from "ethers";
 import { useReadContracts } from "wagmi";
 import { REWARDS_ABI } from "@/lib/abis";
@@ -10,8 +11,9 @@ export type LandingFarmSummary = {
 
 function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
   const enabled = Boolean(farm && isAddress(farm.rewardsContractAddress));
+  const [rewardRate, setRewardRate] = useState<bigint | null>(null);
 
-  const { data, isLoading, isFetching } = useReadContracts({
+  const { data } = useReadContracts({
     contracts: enabled
       ? [
           {
@@ -29,10 +31,26 @@ function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
       refetchInterval: 30_000,
       refetchOnMount: true,
       refetchOnWindowFocus: true,
-      retry: 6,
-      retryDelay: (attempt) => Math.min(1_000 * 2 ** attempt, 10_000),
     },
   });
+
+  useEffect(() => {
+    if (!enabled) {
+      setRewardRate(null);
+      return;
+    }
+
+    const rewardRateResult = data?.[0] as
+      | { status?: string; result?: bigint | null }
+      | undefined;
+
+    if (
+      rewardRateResult?.status === "success" &&
+      typeof rewardRateResult.result === "bigint"
+    ) {
+      setRewardRate(rewardRateResult.result);
+    }
+  }, [data, enabled]);
 
   if (!farm || !enabled) {
     return {
@@ -41,22 +59,15 @@ function useFarmRewardRateSummary(farm?: FarmConfig): LandingFarmSummary {
     };
   }
 
-  const rewardRateResult = data?.[0] as
-    | { status?: string; result?: bigint | null }
-    | undefined;
-
-  if (
-    rewardRateResult?.status === "success" &&
-    typeof rewardRateResult.result === "bigint"
-  ) {
+  if (rewardRate != null) {
     return {
       status: "ready",
-      rewardRate: rewardRateResult.result,
+      rewardRate,
     };
   }
 
   return {
-    status: isLoading || isFetching ? "loading" : "loading",
+    status: "loading",
     rewardRate: null,
   };
 }
